@@ -68,7 +68,9 @@ function RootComponent() {
 			<head>
 				<>
 					<HeadContent />
-					<script type="module" src="/assets/entry-client.js" />
+					{import.meta.env.PROD ? (
+						<script type="module" src="/assets/entry-client.js" />
+					) : null}
 				</>
 			</head>
 			<body>
