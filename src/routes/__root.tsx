@@ -42,14 +42,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 							type: "module",
 							src: "/@vite/client",
 						},
+						{
+							type: "module",
+							src: "/src/entry-client.tsx",
+						},
 					]
-				: []),
-			{
-				type: "module",
-				src: import.meta.env.PROD
-					? "/assets/entry-client.js"
-					: "/src/entry-client.tsx",
-			},
+				: [
+						// The HeadContent component will load the entry script twice
+						// we will add it manually for now
+						// https://github.com/TanStack/router/issues/4585
+						//
+						// {
+						// 	type: "module",
+						// 	src: "/assets/entry-client.js",
+						// },
+					]),
 		],
 	}),
 	component: RootComponent,
@@ -59,7 +66,10 @@ function RootComponent() {
 	return (
 		<html lang="en">
 			<head>
-				<HeadContent />
+				<>
+					<HeadContent />
+					<script type="module" src="/assets/entry-client.js" />
+				</>
 			</head>
 			<body>
 				<Header />
