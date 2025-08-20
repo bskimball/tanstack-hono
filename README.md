@@ -17,7 +17,6 @@ A modern full-stack React application combining **TanStack Router** with **Hono*
 ```
 src/
 ├── components/
-│   ├── Document.tsx          # SSR document shell with Vite asset management
 │   └── Header.tsx            # Reusable UI components
 ├── routes/                   # File-based routing (auto-generated)
 │   ├── __root.tsx            # Root layout component
