@@ -3,9 +3,16 @@ import { defineConfig } from 'vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import devServer from "@hono/vite-dev-server"
-
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { resolve } from 'node:path'
+import "dotenv/config"
+
+const port = process.env.NODE_SERVER_PORT
+	? Number.parseInt(process.env.NODE_SERVER_PORT, 10)
+	: 3000;
+const host = process.env.NODE_SERVER_HOST || "localhost";
+
+console.log({port, host})
 
 const ssrBuild = {
       rollupOptions: {
@@ -20,7 +27,7 @@ const ssrBuild = {
 
 const clientBuild = {
       rollupOptions: {
-          input: ["./src/entry-client.tsx"],
+          input: "./src/entry-client.tsx",
           output: {
             entryFileNames: "assets/[name].js",
           },
@@ -46,5 +53,9 @@ export default defineConfig(({ mode }) => {
         '@': resolve(__dirname, './src'),
       },
     },
+    server: {
+      host,
+      port,
+    }
   }
 })

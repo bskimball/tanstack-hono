@@ -12,6 +12,7 @@ import { logger } from "hono/logger";
 import { CSSLinks, JSScripts } from "./components/Document.tsx";
 import { createRouter } from "./router.tsx";
 import { handler as testHandler } from "./routes/-test.ts";
+import "dotenv/config";
 
 const port = process.env.NODE_SERVER_PORT
 	? Number.parseInt(process.env.NODE_SERVER_PORT, 10)
@@ -20,9 +21,11 @@ const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const app = new Hono();
 
-app.use(logger()); // Enable logging for all routes
+app.use(logger());
 
-app.use(cors()); // Enable CORS for all routes
+app.use(cors());
+
+app.use(compress());
 
 app.get("/test", testHandler);
 
@@ -74,7 +77,6 @@ app.get("*", async (c) => {
 
 // start server
 if (process.env.NODE_ENV === "production") {
-	app.use(compress());
 	serve(
 		{
 			fetch: app.fetch,
