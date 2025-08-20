@@ -68,7 +68,7 @@ function RootComponent() {
 			<head>
 				<>
 					<HeadContent />
-					{/* Will remove this once issue 4585 is resolved */}
+					{/* TODO: remove this once issue 4585 is resolved */}
 					{import.meta.env.PROD ? (
 						<script type="module" src="/assets/entry-client.js" />
 					) : null}
