@@ -14,26 +14,27 @@ const ssrBuild = {
           entryFileNames: "server.js",
         },
       },
-      ssr: true,
-      manifest: true,
+      ssr: true,      
+      emptyOutDir: false,
   }
 
 const clientBuild = {
       rollupOptions: {
           input: ["./src/entry-client.tsx"],
           output: {
-            entryFileNames: "static/entry-[name].js",
+            entryFileNames: "assets/[name].js",
           },
       },
+      manifest: true,
   }
 
 export default defineConfig(({ mode }) => {
-  return {  
+  return {
     plugins: [
-      tanstackRouter({ autoCodeSplitting: true }),
+      tanstackRouter(),
       viteReact(),
       tailwindcss(),
-      devServer({ entry: 'src/entry-server.tsx' }),
+      devServer({ entry: 'src/entry-server.tsx', injectClientScript: false }),
     ],
     build: mode === "client" ? clientBuild : ssrBuild,
     test: {
