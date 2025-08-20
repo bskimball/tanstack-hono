@@ -9,7 +9,6 @@ import { Hono } from "hono";
 import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { CSSLinks, JSScripts } from "./components/Document.tsx";
 import { createRouter } from "./router.tsx";
 import { handler as testHandler } from "./routes/-test.ts";
 import "dotenv/config";
@@ -42,7 +41,7 @@ app.get("*", async (c) => {
 		createRouter: () => {
 			const router = createRouter();
 			router.update({
-				context: { ...router.options.context, request: c.req.raw },
+				context: { ...router.options.context },
 			});
 			return router;
 		},
@@ -52,26 +51,7 @@ app.get("*", async (c) => {
 		return renderRouterToString({
 			responseHeaders,
 			router,
-			children: (
-				<html lang="en">
-					<head>
-						<meta charSet="UTF-8" />
-						<link rel="icon" type="image/svg+xml" href="/logo.svg" />
-						<meta
-							name="viewport"
-							content="width=device-width, initial-scale=1.0"
-						/>
-						<title>Tanstack + Hono</title>
-						<CSSLinks href="/src/styles.css" />
-						<JSScripts src="/src/entry-client.tsx" />
-					</head>
-					<body>
-						<div id="app">
-							<RouterServer router={router} />
-						</div>
-					</body>
-				</html>
-			),
+			children: <RouterServer router={router} />,
 		});
 	});
 });

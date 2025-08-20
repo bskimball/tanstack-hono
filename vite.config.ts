@@ -36,7 +36,7 @@ const clientBuild = {
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
-      tanstackRouter(),
+      tanstackRouter({ autoCodeSplitting: true }),
       viteReact(),
       tailwindcss(),
       devServer({ entry: 'src/entry-server.tsx', injectClientScript: false }),

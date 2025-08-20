@@ -3,7 +3,6 @@ import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals.ts";
 import { createRouter } from "./router.tsx";
-import "./styles.css";
 
 const router = createRouter();
 
