@@ -4,9 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
-    "start": "vite --port 3000",
+    "start": "NODE_ENV=production node dist/server.js",
     "build": "NODE_ENV=production vite build --mode client && vite build && tsc",
-    "serve": "vite preview",
     "test": "vitest run",
     "format": "biome format",
     "lint": "biome lint",
