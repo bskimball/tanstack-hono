@@ -18,15 +18,16 @@ A modern full-stack React application combining **TanStack Router** with **Hono*
 src/
 ├── components/
 │   ├── Document.tsx          # SSR document shell with Vite asset management
-│   └── Header.tsx           # Reusable UI components
+│   └── Header.tsx            # Reusable UI components
 ├── routes/                   # File-based routing (auto-generated)
-│   ├── __root.tsx           # Root layout component
-│   ├── index.tsx            # Home page route
-│   └── about.tsx            # Example route
+│   ├── __root.tsx            # Root layout component
+│   ├── index.tsx             # Home page route
+│   ├── about.tsx             # About page route
+│   └── -test.ts              # Test route utilities
 ├── entry-client.tsx          # Client-side hydration entry
 ├── entry-server.tsx          # Hono server with SSR setup
-├── router.tsx               # Router configuration
-└── styles.css              # Global styles
+├── router.tsx                # Router configuration
+└── styles.css                # Global styles
 ```
 
 ## 🛠 Development
