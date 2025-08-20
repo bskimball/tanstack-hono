@@ -11,6 +11,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { CSSLinks, JSScripts } from "./components/Document.tsx";
 import { createRouter } from "./router.tsx";
+import { handler as testHandler } from "./routes/-test.ts";
 
 const port = process.env.NODE_SERVER_PORT
 	? Number.parseInt(process.env.NODE_SERVER_PORT, 10)
@@ -23,12 +24,12 @@ app.use(logger()); // Enable logging for all routes
 
 app.use(cors()); // Enable CORS for all routes
 
-app.get("/test", (c) => c.text("Hello /test!"));
+app.get("/test", testHandler);
 
 app.use(
 	"*",
 	serveStatic({
-		root: "./",
+		root: process.env.NODE_ENV === "production" ? "./dist" : "./",
 	}),
 );
 
@@ -74,12 +75,6 @@ app.get("*", async (c) => {
 // start server
 if (process.env.NODE_ENV === "production") {
 	app.use(compress());
-	app.use(
-		"*",
-		serveStatic({
-			root: "./dist",
-		}),
-	);
 	serve(
 		{
 			fetch: app.fetch,
