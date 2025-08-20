@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import {
+	RouterServer,
 	createRequestHandler,
 	renderRouterToString,
 } from "@tanstack/react-router/ssr/server";
@@ -8,7 +9,7 @@ import { Hono } from "hono";
 import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { AppShell } from "./components/Document.tsx";
+import { CSSLinks, JSScripts } from "./components/Document.tsx";
 import { createRouter } from "./router.tsx";
 
 const port = process.env.NODE_SERVER_PORT
@@ -47,7 +48,25 @@ app.get("*", async (c) => {
 		return renderRouterToString({
 			responseHeaders,
 			router,
-			children: <AppShell router={router} title="Tanstack + Hono" />,
+			children: (
+				<html lang="en">
+					<head>
+						<meta charSet="UTF-8" />
+						<meta
+							name="viewport"
+							content="width=device-width, initial-scale=1.0"
+						/>
+						<title>Tanstack + Hono</title>
+						<CSSLinks href="/src/styles.css" />
+						<JSScripts src="/src/entry-client.tsx" />
+					</head>
+					<body>
+						<div id="app">
+							<RouterServer router={router} />
+						</div>
+					</body>
+				</html>
+			),
 		});
 	});
 });

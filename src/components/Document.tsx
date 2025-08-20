@@ -1,8 +1,5 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { AnyRouter } from "@tanstack/react-router";
-import { RouterServer } from "@tanstack/react-router/ssr/server";
-import type { ReactNode } from "react";
 
 // Type definitions for Vite manifest
 interface ManifestEntry {
@@ -35,7 +32,7 @@ const getManifest = (): ViteManifest | null => {
 	}
 };
 
-const CSSLinks = () => {
+export const CSSLinks = ({ href }: { href: string }) => {
 	if (process.env.NODE_ENV === "production") {
 		const manifest = getManifest();
 		const clientEntry = manifest
@@ -77,12 +74,12 @@ const CSSLinks = () => {
 
 	return (
 		<>
-			<link rel="stylesheet" href="/src/styles.css" />
+			<link rel="stylesheet" href={href} />
 		</>
 	);
 };
 
-const JSScripts = () => {
+export const JSScripts = ({ src }: { src: string }) => {
 	if (process.env.NODE_ENV === "production") {
 		const manifest = getManifest();
 		const clientEntry = manifest
@@ -143,47 +140,7 @@ const JSScripts = () => {
 				}}
 			/>
 			<script type="module" src="/@vite/client" />
-			<script type="module" src="/src/entry-client.tsx" />
+			<script type="module" src={src} />
 		</>
 	);
-};
-
-interface DocumentProps {
-	title?: string;
-	children: ReactNode;
-}
-
-export const Document = ({ title = "Testing", children }: DocumentProps) => {
-	return (
-		<html lang="en">
-			<head>
-				<meta charSet="UTF-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-				<title>{title}</title>
-				<CSSLinks />
-				<JSScripts />
-			</head>
-			<body>
-				<div id="app">{children}</div>
-			</body>
-		</html>
-	);
-};
-
-interface AppShellProps {
-	router: AnyRouter;
-	title?: string;
-}
-
-export const AppShell = ({ router, title }: AppShellProps) => {
-	return (
-		<Document title={title}>
-			<RouterServer router={router} />
-		</Document>
-	);
-};
-
-// Factory function to create AppShell without JSX in the middleware
-export const createAppShell = (router: AnyRouter, title?: string) => {
-	return <AppShell router={router} title={title} />;
 };
