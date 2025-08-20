@@ -12,8 +12,6 @@ const port = process.env.NODE_SERVER_PORT
 	: 3000;
 const host = process.env.NODE_SERVER_HOST || "localhost";
 
-console.log({port, host})
-
 const ssrBuild = {
       rollupOptions: {
         input: "./src/entry-server.tsx",
