@@ -12,7 +12,7 @@ import appCss from "../styles.css?url";
 export const Route = createRootRouteWithContext<RouterContext>()({
 	head: () => ({
 		links: [
-			{ rel: "icon", href: "/images/favicon.ico" },
+			{ rel: "icon", href: "/favicon.ico" },
 			{ rel: "stylesheet", href: appCss },
 		],
 		meta: [
