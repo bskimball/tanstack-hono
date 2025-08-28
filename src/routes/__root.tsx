@@ -42,13 +42,18 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 							type: "module",
 							src: "/@vite/client",
 						},
+						{
+							type: "module",
+							src: "/src/entry-client.tsx",
+						},
 					]
 				: []),
 			{
-				type: "module",
-				src: import.meta.env.PROD
-					? "/static/entry-client.js"
-					: "/src/entry-client.tsx",
+				// issue 4584 in the Tanstack Router library
+				// type: "module",
+				// src: import.meta.env.PROD
+				// 	? "/static/entry-client.js"
+				// 	: "/src/entry-client.tsx",
 			},
 		],
 	}),
@@ -62,9 +67,9 @@ function RootComponent() {
 				<>
 					<HeadContent />
 					{/* TODO: remove this once issue 4585 is resolved */}
-					{/* {import.meta.env.PROD ? (
-						<script type="module" src="/assets/entry-client.js" />
-					) : null} */}
+					{import.meta.env.PROD ? (
+						<script type="module" src="/static/entry-client.js" />
+					) : null}
 				</>
 			</head>
 			<body>

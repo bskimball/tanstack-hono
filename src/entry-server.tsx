@@ -6,7 +6,7 @@ import {
 	renderRouterToString,
 } from "@tanstack/react-router/ssr/server";
 import { Hono } from "hono";
-// import { compress } from "hono/compress";
+import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { createRouter } from "./router.tsx";
@@ -26,19 +26,23 @@ app.use(cors());
 
 app.get("/test", testHandler);
 
-app.use(
-	"/assets/*",
-	serveStatic({
-		root: "./dist/client/static",
-	}),
-);
+if (process.env.NODE_ENV === "production") {
+	app.use(compress());
 
-app.use(
-	"*",
-	serveStatic({
-		root: "./dist/client",
-	}),
-);
+	app.use(
+		"/assets/*",
+		serveStatic({
+			root: "./dist/client/static",
+		}),
+	);
+
+	app.use(
+		"*",
+		serveStatic({
+			root: "./dist/client",
+		}),
+	);
+}
 
 app.use("*", async (c) => {
 	const handler = createRequestHandler({
