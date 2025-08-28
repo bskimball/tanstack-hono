@@ -2,7 +2,7 @@
 import { defineConfig } from 'vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import devServer from "@hono/vite-dev-server"
+import devServer, { defaultOptions } from "@hono/vite-dev-server"
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { resolve } from 'node:path'
 import "dotenv/config"
@@ -54,15 +54,8 @@ export default defineConfig(({ mode }) => {
         entry: 'src/entry-server.tsx',
         injectClientScript: false,
         exclude: [
-          /.*\.css$/,
-          /.*\.ts$/,
-          /.*\.tsx$/,
-          /^\/@.+$/,
-          /\?t\=\d+$/,
-          /^\/favicon\.ico$/,
-          /^\/static\/.+/,
-          /^\/node_modules\/.*/,
           /^\/src\/.+/, // Allow Vite to handle /src/ requests
+          ...defaultOptions.exclude
         ],
       }),
     ],
