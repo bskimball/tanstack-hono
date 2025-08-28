@@ -28,26 +28,26 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			},
 		],
 		scripts: [
-			...(!import.meta.env.PROD
-				? [
-						{
-							type: "module",
-							children: `import RefreshRuntime from "/@react-refresh"
-  								RefreshRuntime.injectIntoGlobalHook(window)
-  								window.$RefreshReg$ = () => {}
-  								window.$RefreshSig$ = () => (type) => type
-  								window.__vite_plugin_react_preamble_installed__ = true`,
-						},
-						{
-							type: "module",
-							src: "/@vite/client",
-						},
-						{
-							type: "module",
-							src: "/src/entry-client.tsx",
-						},
-					]
-				: []),
+			// ...(!import.meta.env.PROD
+			// 	? [
+			// 			{
+			// 				type: "module",
+			// 				children: `import RefreshRuntime from "/@react-refresh"
+  			// 					RefreshRuntime.injectIntoGlobalHook(window)
+  			// 					window.$RefreshReg$ = () => {}
+  			// 					window.$RefreshSig$ = () => (type) => type
+  			// 					window.__vite_plugin_react_preamble_installed__ = true`,
+			// 			},
+			// 			{
+			// 				type: "module",
+			// 				src: "/@vite/client",
+			// 			},
+			// 			{
+			// 				type: "module",
+			// 				src: "/src/entry-client.tsx",
+			// 			},
+			// 		]
+			// 	: []),
 			{
 				// issue 4584 in the Tanstack Router library
 				// type: "module",
@@ -69,7 +69,18 @@ function RootComponent() {
 					{/* TODO: remove this once issue 4585 is resolved */}
 					{import.meta.env.PROD ? (
 						<script type="module" src="/static/entry-client.js" />
-					) : null}
+					) : (
+						<>
+							<script type="module" dangerouslySetInnerHTML={{ __html: `
+								import RefreshRuntime from "/@react-refresh"
+  								RefreshRuntime.injectIntoGlobalHook(window)
+  								window.$RefreshReg$ = () => {}
+  								window.$RefreshSig$ = () => (type) => type
+  								window.__vite_plugin_react_preamble_installed__ = true` }} />
+							<script type="module" src="/@vite/client" />
+							<script type="module" src="/src/entry-client.tsx" />
+						</>
+					)}
 				</>
 			</head>
 			<body>
