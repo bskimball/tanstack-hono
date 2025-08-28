@@ -13,25 +13,36 @@ const port = process.env.NODE_SERVER_PORT
 const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const ssrBuild = {
-      rollupOptions: {
-        input: "./src/entry-server.tsx",
-        output: {
-          entryFileNames: "server.js",
-        },
-      },
-      ssr: true,      
-      emptyOutDir: false,
-  }
+  outDir: 'dist/server',
+  ssrEmitAssets: true,
+  copyPublicDir: false,
+  emptyOutDir: false,
+  rollupOptions: {
+    input: resolve(__dirname, 'src/entry-server.tsx'),
+    output: {
+      entryFileNames: 'index.js',
+      chunkFileNames: 'assets/[name]-[hash].js',
+      assetFileNames: 'assets/[name]-[hash][extname]',
+    },
+  },
+  ssr: true,
+}
 
 const clientBuild = {
-      rollupOptions: {
-          input: "./src/entry-client.tsx",
-          output: {
-            entryFileNames: "assets/[name].js",
-          },
-      },
-      manifest: true,
-  }
+  outDir: 'dist/client',
+  emitAssets: true,
+  copyPublicDir: true,
+  emptyOutDir: true,
+  rollupOptions: {
+    input: resolve(__dirname, 'src/entry-client.tsx'),
+    output: {
+      entryFileNames: 'static/[name].js',
+      chunkFileNames: 'static/assets/[name]-[hash].js',
+      assetFileNames: 'static/assets/[name]-[hash][extname]',
+    },
+  },
+  manifest: true
+}
 
 export default defineConfig(({ mode }) => {
   return {
@@ -39,7 +50,21 @@ export default defineConfig(({ mode }) => {
       tanstackRouter({ autoCodeSplitting: true }),
       viteReact(),
       tailwindcss(),
-      devServer({ entry: 'src/entry-server.tsx', injectClientScript: false }),
+      devServer({ 
+        entry: 'src/entry-server.tsx',
+        injectClientScript: false,
+        exclude: [
+          /.*\.css$/,
+          /.*\.ts$/,
+          /.*\.tsx$/,
+          /^\/@.+$/,
+          /\?t\=\d+$/,
+          /^\/favicon\.ico$/,
+          /^\/static\/.+/,
+          /^\/node_modules\/.*/,
+          /^\/src\/.+/, // Allow Vite to handle /src/ requests
+        ],
+      }),
     ],
     build: mode === "client" ? clientBuild : ssrBuild,
     test: {
@@ -53,7 +78,11 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host,
-      port,
+      port
+    },
+    // Ensure proper dev server handling
+    optimizeDeps: {
+      include: ['react', 'react-dom', '@tanstack/react-router']
     }
   }
 })

@@ -6,7 +6,7 @@ import {
 	renderRouterToString,
 } from "@tanstack/react-router/ssr/server";
 import { Hono } from "hono";
-import { compress } from "hono/compress";
+// import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { createRouter } from "./router.tsx";
@@ -24,24 +24,32 @@ app.use(logger());
 
 app.use(cors());
 
-app.use(compress());
-
 app.get("/test", testHandler);
+
+app.use(
+	"/assets/*",
+	serveStatic({
+		root: "./dist/client/static",
+	}),
+);
 
 app.use(
 	"*",
 	serveStatic({
-		root: process.env.NODE_ENV === "production" ? "./dist" : "./",
+		root: "./dist/client",
 	}),
 );
 
-app.get("*", async (c) => {
+app.use("*", async (c) => {
 	const handler = createRequestHandler({
 		request: c.req.raw,
 		createRouter: () => {
 			const router = createRouter();
 			router.update({
-				context: { ...router.options.context },
+				context: {
+					...router.options.context,
+					head: c.res.headers.get("x-head") || "",
+				},
 			});
 			return router;
 		},
@@ -56,7 +64,7 @@ app.get("*", async (c) => {
 	});
 });
 
-// start server
+// Start server in both development and production
 if (process.env.NODE_ENV === "production") {
 	serve(
 		{
@@ -64,7 +72,9 @@ if (process.env.NODE_ENV === "production") {
 			port: port,
 		},
 		(info) => {
-			console.log(`Server is running on http://${host}:${info.port}`);
+			console.log(
+				`Production server is running on http://${host}:${info.port}`,
+			);
 		},
 	);
 }
