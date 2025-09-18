@@ -4,6 +4,7 @@ import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import devServer, { defaultOptions } from "@hono/vite-dev-server"
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
+import { analyzer } from 'vite-bundle-analyzer'
 import { resolve } from 'node:path'
 import "dotenv/config"
 
@@ -14,7 +15,7 @@ const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const ssrBuild = {
   outDir: 'dist/server',
-  ssrEmitAssets: true,
+  ssrEmitAssets: false,
   copyPublicDir: false,
   emptyOutDir: false,
   rollupOptions: {
@@ -39,7 +40,7 @@ const clientBuild = {
       entryFileNames: 'static/[name].js',
       chunkFileNames: 'static/assets/[name]-[hash].js',
       assetFileNames: 'static/assets/[name]-[hash][extname]',
-    },
+    }
   },
   manifest: true
 }
@@ -50,7 +51,7 @@ export default defineConfig(({ mode }) => {
       tanstackRouter({ autoCodeSplitting: true }),
       viteReact(),
       tailwindcss(),
-      devServer({ 
+      devServer({
         entry: 'src/entry-server.tsx',
         injectClientScript: false,
         exclude: [
@@ -58,6 +59,8 @@ export default defineConfig(({ mode }) => {
           ...defaultOptions.exclude
         ],
       }),
+      // Add bundle analyzer only when --analyze flag is used
+      ...(process.argv.includes('--analyze') ? [analyzer()] : []),
     ],
     build: mode === "client" ? clientBuild : ssrBuild,
     test: {

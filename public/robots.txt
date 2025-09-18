@@ -1,3 +1,14 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap location
+Sitemap: /sitemap.xml
+
+# Common crawl delays for performance
+Crawl-delay: 1
+
+# Block common sensitive folders
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dist/

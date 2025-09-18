@@ -10,8 +10,8 @@ export function createRouter() {
 		} as RouterContext,
 		defaultPreload: "intent",
 		scrollRestoration: true,
-		// defaultStructuralSharing: true,
-		// defaultPreloadStaleTime: 0,
+		defaultStructuralSharing: true,
+		defaultPreloadStaleTime: 0,
 	});
 }
 
