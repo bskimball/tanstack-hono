@@ -15,7 +15,7 @@ const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const ssrBuild = {
   outDir: 'dist/server',
-  ssrEmitAssets: false,
+  ssrEmitAssets: true,
   copyPublicDir: false,
   emptyOutDir: false,
   rollupOptions: {

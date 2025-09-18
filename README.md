@@ -2,6 +2,26 @@
 
 A modern full-stack React application combining **TanStack Router** with **Hono** for server-side rendering. This setup delivers fast, SEO-friendly applications with excellent developer experience.
 
+## 🏃‍♂️ Quick Start
+
+Get started with this template using degit:
+
+```bash
+# Clone the template
+npx degit bskimball/tanstack-hono my-app
+
+# Navigate to your project
+cd my-app
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see your app running!
+
 ## 🚀 Features
 
 - **🗺 TanStack Router**: Type-safe, file-based routing with powerful data loading
@@ -31,59 +51,15 @@ src/
 
 ## 🛠 Development
 
-Start the development server:
-
 ```bash
-npm install
-npm run dev
+npm run dev    # Start development server
+npm run build  # Build for production
+npm start      # Start production server
+npm run test   # Run tests
+npm run check  # Lint and format code
 ```
 
-This starts:
 
-- **Hono server** with SSR at `http://localhost:3000`
-- **Vite dev server** with HMR for instant updates
-- **TanStack Router** with file-based routing
-
-## 🏗 Production Build
-
-Build and run for production:
-
-```bash
-# Build client and server bundles
-npm run build
-
-# Start production server
-npm start
-```
-
-The build creates:
-
-- **Client bundle**: Optimized assets with Vite manifest
-- **Server bundle**: Hono server with embedded SSR
-
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-npm run test
-```
-
-## 🎨 Styling & Code Quality
-
-**Tailwind CSS** for styling:
-
-```bash
-# Styles are processed through Vite with Tailwind
-```
-
-**Biome** for code quality:
-
-```bash
-npm run lint      # Check for issues
-npm run format    # Format code
-npm run check     # Lint + format
-```
 
 ## 🔄 SSR Flow
 
@@ -110,24 +86,19 @@ function AboutPage() {
 }
 ```
 
-### 🔗 Navigation with SSR
-
-Links work seamlessly between server and client:
+### 🔗 Navigation
 
 ```tsx
 import { Link } from "@tanstack/react-router";
 
-<Link to="/about">About</Link>; // Works with SSR + client routing
+<Link to="/about">About</Link>
 ```
 
 ### 📊 Data Loading
 
-Loaders run on the server and hydrate on the client:
-
 ```tsx
 export const Route = createFileRoute("/users")({
   loader: async () => {
-    // Runs on server during SSR, then on client for navigation
     const users = await fetch("/api/users").then((r) => r.json());
     return { users };
   },
@@ -163,7 +134,7 @@ function RootLayout() {
     <>
       <Header />
       <main>
-        <Outlet /> {/* Child routes render here */}
+        <Outlet />
       </main>
     </>
   );
@@ -187,19 +158,16 @@ function RootLayout() {
 
 ## 🚀 Deployment
 
-Deploy to any Node.js hosting platform:
-
 ```bash
 npm run build
-NODE_ENV=production node dist/server.js
+npm start
 ```
 
-**Popular platforms:**
-
-- **Vercel/Netlify**: Serverless functions
-- **Railway/Render**: Container deployment
-- **Cloudflare Workers**: Edge deployment with Hono
-- **Traditional VPS**: PM2 + Nginx
+**Deploy to:**
+- Vercel, Netlify (Serverless)
+- Railway, Render (Containers) 
+- Cloudflare Workers (Edge)
+- VPS with PM2 + Nginx
 
 ## 📚 Learn More
 
