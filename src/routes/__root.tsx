@@ -7,7 +7,6 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import Header from "../components/Header";
 import type { RouterContext } from "../routerContext";
-// Import CSS URL - in dev mode this works, in prod we'll use client manifest path
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
