@@ -1,0 +1,53 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist
+dist-ssr
+*.local
+.nitro
+.tanstack
+
+# Testing
+coverage
+.nyc_output
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Documentation (uncomment if you don't want to include in image)
+# *.md
+# docs
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Misc
+count.txt
+*.log
+.cache

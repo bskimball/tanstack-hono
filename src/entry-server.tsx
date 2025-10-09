@@ -24,6 +24,16 @@ app.use(logger());
 
 app.use(cors());
 
+// Health check endpoint
+app.get("/api/health", (c) => {
+	return c.json({
+		status: "ok",
+		timestamp: new Date().toISOString(),
+		uptime: process.uptime(),
+		environment: process.env.NODE_ENV || "development",
+	});
+});
+
 app.get("/test", testHandler);
 
 if (process.env.NODE_ENV === "production") {

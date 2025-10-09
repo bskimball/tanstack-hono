@@ -1,10 +1,13 @@
-# TanStack Router + Hono SSR
+# TanStack Router + Hono SSR Template
 
-A modern full-stack React application combining **TanStack Router** with **Hono** for server-side rendering. This setup delivers fast, SEO-friendly applications with excellent developer experience.
+A modern, production-ready full-stack React application template combining **TanStack Router** with **Hono** for server-side rendering. This setup delivers fast, SEO-friendly applications with excellent developer experience.
+
+[![CI](https://github.com/bskimball/tanstack-hono/actions/workflows/ci.yml/badge.svg)](https://github.com/bskimball/tanstack-hono/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🏃‍♂️ Quick Start
 
-Get started with this template using degit:
+### Option 1: Using the Setup Script (Recommended)
 
 ```bash
 # Clone the template
@@ -12,6 +15,28 @@ npx degit bskimball/tanstack-hono my-app
 
 # Navigate to your project
 cd my-app
+
+# Run the interactive setup script
+bash scripts/setup.sh
+```
+
+The setup script will:
+- Update project name in package.json
+- Create .env file from .env.example
+- Install dependencies (optional)
+- Initialize git repository (optional)
+
+### Option 2: Manual Setup
+
+```bash
+# Clone the template
+npx degit bskimball/tanstack-hono my-app
+
+# Navigate to your project
+cd my-app
+
+# Copy environment file
+cp .env.example .env
 
 # Install dependencies
 npm install
@@ -21,6 +46,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see your app running!
+
+**Health Check**: [http://localhost:3000/api/health](http://localhost:3000/api/health)
 
 ## 🚀 Features
 
@@ -156,22 +183,70 @@ function RootLayout() {
 - **Edge Ready**: Deploy to Cloudflare Workers, etc.
 - **Fast Startup**: Quick cold start times
 
+## 🐳 Docker Support
+
+### Using Docker
+
+```bash
+# Build and run production
+docker-compose up app
+
+# Development with hot reload
+docker-compose --profile dev up dev
+```
+
+### Building the Image
+
+```bash
+docker build -t tanstack-hono .
+docker run -p 3000:3000 tanstack-hono
+```
+
 ## 🚀 Deployment
+
+### Build for Production
 
 ```bash
 npm run build
 npm start
 ```
 
-**Deploy to:**
-- Vercel, Netlify (Serverless)
-- Railway, Render (Containers) 
-- Cloudflare Workers (Edge)
-- VPS with PM2 + Nginx
+### Deploy to:
 
-## 📚 Learn More
+- **Docker**: Use included Dockerfile and docker-compose.yml
+- **Vercel/Netlify**: Serverless functions
+- **Railway/Render**: Container deployments
+- **Cloudflare Workers**: Edge runtime
+- **VPS**: With PM2 + Nginx
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed deployment strategies.
+
+## 📚 Documentation
+
+- **[AGENTS.md](AGENTS.md)** - Guide for AI agents working with this codebase
+- **[CLAUDE.md](CLAUDE.md)** - Claude-specific context and patterns
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Deep dive into system design
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[SECURITY.md](SECURITY.md)** - Security policy and best practices
+
+## 🤖 AI-Friendly
+
+This template includes comprehensive documentation for AI coding assistants:
+- `.cursorrules` for Cursor IDE
+- `AGENTS.md` for general AI agent guidelines
+- `CLAUDE.md` for Claude-specific context
+
+## 📖 Learn More
 
 - [TanStack Router](https://tanstack.com/router) - Type-safe routing
 - [Hono](https://hono.dev) - Ultrafast web framework
 - [SSR Guide](https://tanstack.com/router/latest/docs/framework/react/guide/ssr) - TanStack Router SSR
 - [Vite SSR](https://vitejs.dev/guide/ssr.html) - Vite server-side rendering
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
