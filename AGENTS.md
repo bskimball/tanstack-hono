@@ -28,8 +28,8 @@ This is a full-stack React application using:
 
 ### Build Process
 The build happens in three stages:
-1. `build:client` - Builds client bundle to `dist/client/`
-2. `build:server` - Builds server bundle to `dist/`
+1. `build:client` - Builds client bundle to `dist/client/static/`
+2. `build:server` - Builds server bundle to `dist/server/index.js`
 3. `build:types` - Type checks with TypeScript
 
 ## Key Patterns
@@ -89,10 +89,10 @@ app.get('/api/users', (c) => {
 ## Code Style
 
 - **Formatting**: Biome handles formatting (not Prettier)
-- **Imports**: Use absolute imports from `src/`
+- **Imports**: Use `@/` path alias or relative imports (both configured)
 - **Types**: Prefer interfaces over types for objects
 - **Components**: Use function declarations, not arrow functions for named components
-- **File naming**: Use kebab-case for file names
+- **File naming**: Use kebab-case for file names (e.g., `user-profile.tsx`) or PascalCase for components (e.g., `Header.tsx`)
 
 ## Common Tasks
 

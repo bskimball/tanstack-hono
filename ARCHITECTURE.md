@@ -107,9 +107,9 @@ tanstack-hono/
 │   └── styles.css           # Global styles + Tailwind
 ├── dist/                    # Build output
 │   ├── client/              # Client bundle (browser)
-│   │   ├── assets/          # JS, CSS, and other assets
-│   │   └── index.html       # Not used (SSR generates HTML)
-│   └── server.js            # Server bundle (Node.js)
+│   │   └── static/          # JS, CSS, and other assets
+│   └── server/              # Server bundle (Node.js)
+│       └── index.js         # Server entry point
 ├── public/                  # Static assets (if needed)
 ├── .github/workflows/       # CI/CD pipelines
 ├── vite.config.ts           # Vite configuration
@@ -216,7 +216,7 @@ This:
 
 **Server Build** (`npm run build:server`):
 - Builds Node.js server bundle
-- Output: `dist/server.js`
+- Output: `dist/server/index.js`
 - Includes SSR rendering logic
 
 #### Vite Configuration

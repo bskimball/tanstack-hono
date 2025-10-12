@@ -7,4 +7,7 @@ const router = createRouter();
 
 hydrateRoot(document, <RouterClient router={router} />);
 
-reportWebVitals(console.log);
+// Only report web vitals in development
+if (import.meta.env.DEV) {
+	reportWebVitals(console.log);
+}

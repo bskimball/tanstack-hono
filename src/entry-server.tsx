@@ -9,6 +9,7 @@ import { Hono } from "hono";
 import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { secureHeaders } from "hono/secure-headers";
 import { createRouter } from "./router.tsx";
 import { setupApiRoutes } from "./routes/-api.ts";
 import { handler as testHandler } from "./routes/-test.ts";
@@ -21,9 +22,20 @@ const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const app = new Hono();
 
+// Security headers
+app.use(secureHeaders());
+
+// Logger
 app.use(logger());
 
-app.use(cors());
+// CORS - configure via environment variable
+const allowedOrigin = process.env.CORS_ORIGIN || "*";
+app.use(
+	cors({
+		origin: allowedOrigin,
+		credentials: true,
+	}),
+);
 
 // Setup API routes
 setupApiRoutes(app);
@@ -34,14 +46,7 @@ if (process.env.NODE_ENV === "production") {
 	app.use(compress());
 
 	app.use(
-		"/assets/*",
-		serveStatic({
-			root: "./dist/client/static",
-		}),
-	);
-
-	app.use(
-		"*",
+		"/*",
 		serveStatic({
 			root: "./dist/client",
 		}),
@@ -56,7 +61,6 @@ app.use("*", async (c) => {
 			router.update({
 				context: {
 					...router.options.context,
-					head: c.res.headers.get("x-head") || "",
 				},
 			});
 			return router;
@@ -78,6 +82,7 @@ if (process.env.NODE_ENV === "production") {
 		{
 			fetch: app.fetch,
 			port: port,
+			hostname: host,
 		},
 		(info) => {
 			console.log(

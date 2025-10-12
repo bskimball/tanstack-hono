@@ -20,7 +20,8 @@ You are working on a full-stack React SSR application with TanStack Router and H
 - Use kebab-case for file names (e.g., `user-profile.tsx`)
 
 ### Imports
-- Use relative imports (no path aliases configured)
+- Use `@/` path alias for imports from `src/` (configured in tsconfig.json and vite.config.ts)
+- Alternatively, relative imports are also acceptable
 - Group imports: external packages, then local files
 - Sort imports alphabetically within groups
 
@@ -81,6 +82,7 @@ Access via `process.env.VARIABLE_NAME`
 - `NODE_SERVER_PORT`
 - `NODE_SERVER_HOST`
 - `NODE_ENV`
+- `CORS_ORIGIN`
 
 ### Client-side
 Must be prefixed with `VITE_` to be accessible in browser

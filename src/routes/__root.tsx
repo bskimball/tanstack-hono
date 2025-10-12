@@ -42,16 +42,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 							type: "module",
 							src: "/@vite/client",
 						},
-						{
-							type: "module",
-							src: "/src/entry-client.tsx",
-						},
 					]
 				: []),
 			{
 				type: "module",
 				src: import.meta.env.PROD
-					? "/static/entry-client.js"
+					? "/assets/entry-client.js"
 					: "/src/entry-client.tsx",
 			},
 		],

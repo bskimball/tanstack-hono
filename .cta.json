@@ -1,13 +1,11 @@
 {
-  "projectName": "tanstack-hono",
-  "mode": "file-router",
-  "typescript": true,
-  "tailwind": true,
-  "packageManager": "npm",
-  "git": true,
-  "version": 1,
-  "framework": "react-cra",
-  "chosenAddOns": [
-    "biome"
-  ]
+	"projectName": "tanstack-hono",
+	"mode": "file-router",
+	"typescript": true,
+	"tailwind": true,
+	"packageManager": "npm",
+	"git": true,
+	"version": 1,
+	"framework": "react-cra",
+	"chosenAddOns": ["biome"]
 }
