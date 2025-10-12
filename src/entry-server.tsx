@@ -11,6 +11,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { createRouter } from "./router.tsx";
 import { handler as testHandler } from "./routes/-test.ts";
+import { setupApiRoutes } from "./routes/-api.ts";
 import "dotenv/config";
 
 const port = process.env.NODE_SERVER_PORT
@@ -24,15 +25,8 @@ app.use(logger());
 
 app.use(cors());
 
-// Health check endpoint
-app.get("/api/health", (c) => {
-	return c.json({
-		status: "ok",
-		timestamp: new Date().toISOString(),
-		uptime: process.uptime(),
-		environment: process.env.NODE_ENV || "development",
-	});
-});
+// Setup API routes
+setupApiRoutes(app);
 
 app.get("/test", testHandler);
 
