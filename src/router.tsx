@@ -1,6 +1,6 @@
 import { createRouter as createTanstackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen.ts";
 import type { RouterContext } from "./routerContext";
+import { routeTree } from "./routeTree.gen.ts";
 
 export function createRouter() {
 	return createTanstackRouter({

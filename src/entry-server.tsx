@@ -1,8 +1,8 @@
 import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import {
-	RouterServer,
 	createRequestHandler,
+	RouterServer,
 	renderRouterToString,
 } from "@tanstack/react-router/ssr/server";
 import { Hono } from "hono";
@@ -10,8 +10,8 @@ import { compress } from "hono/compress";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { createRouter } from "./router.tsx";
-import { handler as testHandler } from "./routes/-test.ts";
 import { setupApiRoutes } from "./routes/-api.ts";
+import { handler as testHandler } from "./routes/-test.ts";
 import "dotenv/config";
 
 const port = process.env.NODE_SERVER_PORT

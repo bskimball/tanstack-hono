@@ -1,8 +1,8 @@
 import {
+	createRootRouteWithContext,
 	HeadContent,
 	Outlet,
 	Scripts,
-	createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import Header from "../components/Header";
@@ -71,6 +71,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 							{error?.message || "An unexpected error occurred"}
 						</p>
 						<button
+							type="button"
 							className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
 							onClick={() => window.location.reload()}
 						>
