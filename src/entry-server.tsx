@@ -11,7 +11,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
 import { createRouter } from "./router.tsx";
-import { setupApiRoutes } from "./routes/-api.ts";
+import { handler as apiHandler } from "./routes/-api.ts";
 import { handler as testHandler } from "./routes/-test.ts";
 import "dotenv/config";
 
@@ -38,7 +38,7 @@ app.use(
 );
 
 // Setup API routes
-setupApiRoutes(app);
+app.route("/api", apiHandler);
 
 app.get("/test", testHandler);
 

@@ -49,7 +49,11 @@ export default defineConfig(({ mode }) => {
 	return {
 		plugins: [
 			tanstackRouter({ autoCodeSplitting: true }),
-			viteReact(),
+			viteReact({
+				babel: {
+					plugins: ["babel-plugin-react-compiler"],
+				},
+			}),
 			tailwindcss(),
 			devServer({
 				entry: "src/entry-server.tsx",
