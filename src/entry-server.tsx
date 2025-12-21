@@ -25,16 +25,19 @@ const app = new Hono();
 // Security headers
 app.use(secureHeaders());
 
-// Logger
-app.use(logger());
+// Logger - only in development or for API routes
+if (!import.meta.env.PROD) {
+	app.use(logger());
+}
 
-// CORS - configure via environment variable
+// CORS - scope to /api and configure via environment variable
 const allowedOrigin = process.env.CORS_ORIGIN || "*";
 app.use(
+	"/api/*",
 	cors({
 		origin: allowedOrigin,
-		credentials: true,
-	}),
+		credentials: allowedOrigin !== "*",
+	})
 );
 
 // Setup API routes
@@ -49,7 +52,7 @@ if (process.env.NODE_ENV === "production") {
 		"/*",
 		serveStatic({
 			root: "./dist/client",
-		}),
+		})
 	);
 }
 
@@ -85,10 +88,8 @@ if (process.env.NODE_ENV === "production") {
 			hostname: host,
 		},
 		(info) => {
-			console.log(
-				`Production server is running on http://${host}:${info.port}`,
-			);
-		},
+			console.log(`Production server is running on http://${host}:${info.port}`);
+		}
 	);
 }
 

@@ -10,7 +10,8 @@ This is a full-stack React application using:
 - **Vite** for build tooling and development server
 - **TypeScript** for type safety across client and server
 - **Tailwind CSS v4** for styling
-- **Biome** for linting and formatting
+- **ESLint** for linting
+- **Prettier** for formatting
 - **Vitest** for testing
 
 ## Architecture
@@ -88,7 +89,8 @@ app.get('/api/users', (c) => {
 
 ## Code Style
 
-- **Formatting**: Biome handles formatting (not Prettier)
+- **Formatting**: Prettier handles formatting (Biome was removed)
+- **Linting**: ESLint handles linting
 - **Imports**: Use `@/` path alias or relative imports (both configured)
 - **Types**: Prefer interfaces over types for objects
 - **Components**: Use function declarations, not arrow functions for named components

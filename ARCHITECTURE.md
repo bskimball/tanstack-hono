@@ -26,7 +26,7 @@ This is a full-stack TypeScript application combining React for the UI, TanStack
 
 ### Tooling
 - **TypeScript**: Type safety across the stack
-- **Biome**: Fast linting and formatting
+- **ESLint & Prettier**: Industry standard linting and formatting
 - **Vitest**: Unit testing framework
 
 ## Architecture Diagram
@@ -114,7 +114,8 @@ tanstack-hono/
 ├── .github/workflows/       # CI/CD pipelines
 ├── vite.config.ts           # Vite configuration
 ├── tsconfig.json            # TypeScript configuration
-├── biome.json               # Biome configuration
+├── eslint.config.js         # ESLint configuration
+├── .prettierrc              # Prettier configuration
 └── package.json             # Dependencies and scripts
 ```
 
@@ -513,10 +514,10 @@ export const Route = createRootRoute({
 - **Modern**: ESM-based, optimized for modern browsers
 - **Plugin Ecosystem**: Rich plugin ecosystem
 
-### Why Biome?
-- **Speed**: 100x faster than ESLint + Prettier
-- **All-in-One**: Linting + formatting in one tool
-- **Compatible**: Drop-in replacement for ESLint/Prettier
+### Why ESLint & Prettier?
+- **Standardization**: Most widely used tools in the ecosystem
+- **Extensibility**: Massive plugin ecosystem for React and TypeScript
+- **Integration**: Best-in-class editor and CI support
 
 ## Future Enhancements
 

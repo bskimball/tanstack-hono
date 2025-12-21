@@ -1,0 +1,5 @@
+dist/
+node_modules/
+src/routeTree.gen.ts
+package-lock.json
+*.md

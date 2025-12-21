@@ -55,8 +55,8 @@ Open [http://localhost:3000](http://localhost:3000) to see your app running!
 - **⚡ Hono SSR**: Ultra-fast server-side rendering with minimal overhead
 - **🔥 Vite**: Lightning-fast development with Hot Module Replacement
 - **📘 TypeScript**: Full type safety across client and server
-- **🎨 Tailwind CSS**: Modern utility-first CSS framework
-- **🧹 Biome**: Fast linting, formatting, and code quality
+- **🎨 Tailwind CSS v4**: Modern utility-first CSS framework
+- **🧹 ESLint & Prettier**: Industry standard linting and formatting for code quality
 - **🧪 Vitest**: Fast unit testing with great DX
 
 ## 📁 Architecture

@@ -9,7 +9,8 @@ You are working on a full-stack React SSR application with TanStack Router and H
 - **Build**: Vite 7
 - **Styling**: Tailwind CSS v4
 - **Testing**: Vitest + Testing Library
-- **Linting**: Biome (not ESLint/Prettier)
+- **Linting**: ESLint
+- **Formatting**: Prettier
 
 ## Code Style
 
@@ -154,12 +155,11 @@ export const Route = createFileRoute('/path')({
 - Sanitize user input
 - Use CORS middleware (already configured)
 
-## Biome Configuration
+## ESLint & Prettier Configuration
 
-- Biome handles both linting and formatting
-- Config in `biome.json`
-- Do NOT suggest ESLint or Prettier
-- Run fixes with `npm run check -- --write`
+- ESLint handles linting via `eslint.config.js`
+- Prettier handles formatting via `.prettierrc`
+- Run fixes with `npm run format` or `npm run lint -- --fix`
 
 ## SSR Considerations
 

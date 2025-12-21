@@ -1,9 +1,9 @@
 {
 	// Editor
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "biomejs.biome",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.biome": "explicit"
+		"source.fixAll.eslint": "explicit"
 	},
 	"editor.tabSize": 2,
 	"editor.insertSpaces": false,
@@ -36,25 +36,25 @@
 
 	// Biome (disable conflicting formatters)
 	"[javascript]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[javascriptreact]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[typescript]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[typescriptreact]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[json]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[jsonc]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[css]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 
 	// Tailwind CSS

@@ -37,9 +37,9 @@ const clientBuild = {
 	rollupOptions: {
 		input: resolve(__dirname, "src/entry-client.tsx"),
 		output: {
-			entryFileNames: "assets/[name].js",
-			chunkFileNames: "assets/[name]-[hash].js",
-			assetFileNames: "assets/[name]-[hash][extname]",
+			entryFileNames: "static/[name].js",
+			chunkFileNames: "static/[name]-[hash].js",
+			assetFileNames: "static/[name]-[hash][extname]",
 		},
 	},
 	manifest: true,
@@ -83,6 +83,7 @@ export default defineConfig(({ mode }) => {
 		// Ensure proper dev server handling
 		optimizeDeps: {
 			include: ["react", "react-dom", "@tanstack/react-router"],
+			exclude: ["web-vitals"],
 		},
 	};
 });
