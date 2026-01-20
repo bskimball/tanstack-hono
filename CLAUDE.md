@@ -1,24 +1,14 @@
 # Claude Guidelines
 
-This project is a full-stack React SSR application using TanStack Router and Hono.
+Prefer `AGENTS.md` as the source of truth for repo-wide rules; this file is a quick Claude-oriented entry point.
 
-## Key Commands
-- `npm run dev`: Start development server
-- `npm run build`: Build client and server for production
-- `npm run start`: Start production server
-- `npm run check`: Run lint and format checks
-- `npm run format`: Format code with Prettier
-- `npm run lint`: Lint code with ESLint
-- `npm test`: Run tests with Vitest
+## Essentials
 
-## Technical Details
-- **Routing**: File-based via `src/routes/`. TanStack Router plugin auto-generates `src/routeTree.gen.ts`.
-- **SSR**: Handled in `src/entry-server.tsx` using Hono.
-- **Styling**: Tailwind CSS v4.
-- **Linting/Formatting**: ESLint and Prettier.
+- Key commands: `npm run dev`, `npm run build`, `npm run start`, `npm run check`, `npm test`
+- Never edit `src/routeTree.gen.ts` directly (auto-generated)
 
-## AI Assistant Tips
-- Never edit `src/routeTree.gen.ts` directly.
-- Use function declarations for components.
-- Follow the directory structure: `src/routes/`, `src/components/`, `src/hooks/`.
-- Refer to `AGENTS.md` and `ARCHITECTURE.md` for deeper architecture details.
+## References
+
+- Repo-wide agent rules: `AGENTS.md`
+- Commands + workflows: `docs/ai/commands.md`
+- Architecture: `docs/ai/architecture.md`

@@ -3,7 +3,24 @@ import { hydrateRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { createRouter } from "./router";
 
-const router = createRouter();
+import "./styles.css";
+
+function getInitialAppCssHrefs() {
+	const links = document.querySelectorAll<HTMLLinkElement>("link[data-app-css]");
+	return Array.from(links)
+		.map((link) => {
+			try {
+				return new URL(link.href).pathname;
+			} catch {
+				return null;
+			}
+		})
+		.filter((href): href is string => Boolean(href));
+}
+
+const router = createRouter({
+	appCssHrefs: getInitialAppCssHrefs(),
+});
 
 hydrateRoot(document, <RouterClient router={router} />);
 

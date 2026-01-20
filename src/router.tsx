@@ -2,12 +2,20 @@ import { createRouter as createTanstackRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
 import type { RouterContext } from "./types/router";
 
-export function createRouter() {
+export interface CreateRouterOptions {
+	head?: string;
+	appCssHrefs?: string[];
+}
+
+export function createRouter(options: CreateRouterOptions = {}) {
+	const context: RouterContext = {
+		head: options.head ?? "",
+		appCssHrefs: options.appCssHrefs ?? [],
+	};
+
 	return createTanstackRouter({
 		routeTree,
-		context: {
-			head: "",
-		} as RouterContext,
+		context,
 		defaultPreload: "intent",
 		scrollRestoration: true,
 		defaultStructuralSharing: true,

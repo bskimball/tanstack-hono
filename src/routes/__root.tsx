@@ -1,7 +1,6 @@
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import React, { Suspense } from "react";
 import Header from "../components/Header";
-import appCss from "../styles.css?url";
 import type { RouterContext } from "../types/router";
 
 const TanStackRouterDevtools = import.meta.env.PROD
@@ -13,10 +12,14 @@ const TanStackRouterDevtools = import.meta.env.PROD
 		);
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-	head: () => ({
+	head: ({ match }) => ({
 		links: [
 			{ rel: "icon", href: "/favicon.ico" },
-			{ rel: "stylesheet", href: appCss },
+			...match.context.appCssHrefs.map((href) => ({
+				rel: "stylesheet",
+				href,
+				"data-app-css": "1",
+			})),
 		],
 		meta: [
 			{
@@ -53,92 +56,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			},
 		],
 	}),
-	errorComponent: ({ error }) => (
-		<html lang="en">
-			<head>
-				<meta charSet="UTF-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-				<title>Error - TanStack Router</title>
-				<link rel="stylesheet" href={appCss} />
-			</head>
-			<body>
-				<main className="min-h-screen bg-[var(--color-void)] relative overflow-hidden flex items-center justify-center">
-					<div className="noise-overlay" />
-
-					{/* Ambient gradient */}
-					<div className="absolute inset-0 bg-gradient-to-b from-[var(--color-coral)]/5 via-transparent to-[var(--color-cyan)]/5" />
-
-					{/* Scanline effect */}
-					<div
-						className="absolute inset-0 pointer-events-none opacity-[0.02]"
-						style={{
-							backgroundImage:
-								"repeating-linear-gradient(0deg, transparent, transparent 2px, var(--color-bone) 2px, var(--color-bone) 4px)",
-						}}
-					/>
-
-					<div className="relative z-10 text-center px-8">
-						<div className="relative mb-8">
-							<h1 className="text-8xl md:text-9xl font-bold leading-none tracking-tighter text-[var(--color-coral)] select-none">
-								ERROR
-							</h1>
-						</div>
-
-						<div className="space-y-6 animate-fade-up" style={{ animationFillMode: "forwards" }}>
-							<h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-bone)]">
-								Something went wrong
-							</h2>
-							<div className="p-4 bg-[var(--color-charcoal)]/50 border border-[var(--color-coral)]/30 rounded-lg max-w-md mx-auto">
-								<code className="text-sm font-mono text-[var(--color-coral)] break-words">
-									{error?.message || "An unexpected error occurred"}
-								</code>
-							</div>
-						</div>
-
-						<div
-							className="mt-12 flex flex-wrap gap-4 justify-center animate-fade-up"
-							style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
-						>
-							<button
-								type="button"
-								className="group inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-bone)] text-[var(--color-void)] font-semibold rounded-lg hover:bg-[var(--color-coral)] transition-all duration-300"
-								onClick={() => window.location.reload()}
-							>
-								<svg
-									className="w-5 h-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-									aria-hidden="true"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth={2}
-										d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-									/>
-								</svg>
-								Reload Page
-							</button>
-							<a
-								href="/"
-								className="inline-flex items-center gap-3 px-8 py-4 bg-transparent text-[var(--color-bone)] font-semibold rounded-lg border border-[var(--color-mist)] hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] transition-all duration-300"
-							>
-								Return Home
-							</a>
-						</div>
-					</div>
-
-					{/* Floating geometric elements */}
-					<div className="absolute top-20 left-20 w-2 h-2 bg-[var(--color-cyan)] rounded-full animate-float opacity-60" />
-					<div
-						className="absolute bottom-32 right-32 w-3 h-3 bg-[var(--color-coral)] rounded-full animate-float opacity-40"
-						style={{ animationDelay: "1s" }}
-					/>
-				</main>
-			</body>
-		</html>
-	),
+	errorComponent: RootErrorComponent,
 	notFoundComponent: () => (
 		<main className="min-h-screen bg-[var(--color-void)] relative overflow-hidden flex items-center justify-center">
 			{/* Noise overlay */}
@@ -238,6 +156,99 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 	),
 	component: RootComponent,
 });
+
+function RootErrorComponent({ error }: { error: { message?: string } | null }) {
+	const { appCssHrefs } = Route.useRouteContext();
+
+	return (
+		<html lang="en">
+			<head>
+				<meta charSet="UTF-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<title>Error - TanStack Router</title>
+				{appCssHrefs.map((href) => (
+					<link key={href} rel="stylesheet" href={href} data-app-css="1" />
+				))}
+			</head>
+			<body>
+				<main className="min-h-screen bg-[var(--color-void)] relative overflow-hidden flex items-center justify-center">
+					<div className="noise-overlay" />
+
+					{/* Ambient gradient */}
+					<div className="absolute inset-0 bg-gradient-to-b from-[var(--color-coral)]/5 via-transparent to-[var(--color-cyan)]/5" />
+
+					{/* Scanline effect */}
+					<div
+						className="absolute inset-0 pointer-events-none opacity-[0.02]"
+						style={{
+							backgroundImage:
+								"repeating-linear-gradient(0deg, transparent, transparent 2px, var(--color-bone) 2px, var(--color-bone) 4px)",
+						}}
+					/>
+
+					<div className="relative z-10 text-center px-8">
+						<div className="relative mb-8">
+							<h1 className="text-8xl md:text-9xl font-bold leading-none tracking-tighter text-[var(--color-coral)] select-none">
+								ERROR
+							</h1>
+						</div>
+
+						<div className="space-y-6 animate-fade-up" style={{ animationFillMode: "forwards" }}>
+							<h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-bone)]">
+								Something went wrong
+							</h2>
+							<div className="p-4 bg-[var(--color-charcoal)]/50 border border-[var(--color-coral)]/30 rounded-lg max-w-md mx-auto">
+								<code className="text-sm font-mono text-[var(--color-coral)] break-words">
+									{error?.message || "An unexpected error occurred"}
+								</code>
+							</div>
+						</div>
+
+						<div
+							className="mt-12 flex flex-wrap gap-4 justify-center animate-fade-up"
+							style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
+						>
+							<button
+								type="button"
+								className="group inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-bone)] text-[var(--color-void)] font-semibold rounded-lg hover:bg-[var(--color-coral)] transition-all duration-300"
+								onClick={() => window.location.reload()}
+							>
+								<svg
+									className="w-5 h-5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									aria-hidden="true"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+									/>
+								</svg>
+								Reload Page
+							</button>
+							<a
+								href="/"
+								className="inline-flex items-center gap-3 px-8 py-4 bg-transparent text-[var(--color-bone)] font-semibold rounded-lg border border-[var(--color-mist)] hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] transition-all duration-300"
+							>
+								Return Home
+							</a>
+						</div>
+					</div>
+
+					{/* Floating geometric elements */}
+					<div className="absolute top-20 left-20 w-2 h-2 bg-[var(--color-cyan)] rounded-full animate-float opacity-60" />
+					<div
+						className="absolute bottom-32 right-32 w-3 h-3 bg-[var(--color-coral)] rounded-full animate-float opacity-40"
+						style={{ animationDelay: "1s" }}
+					/>
+				</main>
+			</body>
+		</html>
+	);
+}
 
 function RootComponent() {
 	return (
