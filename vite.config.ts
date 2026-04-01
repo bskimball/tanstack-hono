@@ -232,11 +232,47 @@ export default defineConfig({
 	},
 	plugins: [
 		tanstackRouter({ autoCodeSplitting: true }),
-		viteReact({
-			babel: {
-				plugins: ["babel-plugin-react-compiler"],
-			},
-		}),
+		...(() => {
+			const reactPlugins = viteReact({
+				babel: {
+					plugins: ["babel-plugin-react-compiler"],
+				},
+			});
+			const babelPlugin = reactPlugins.find((p) => p && p.name === "vite:react-babel");
+			if (babelPlugin && typeof babelPlugin.config === "function") {
+				const origConfig = babelPlugin.config;
+				babelPlugin.config = function (config, env) {
+					const res = (origConfig.call(this as never, config, env) || {}) as Record<
+						string,
+						unknown
+					>;
+					if (res.esbuild && typeof res.esbuild === "object") {
+						const esbuild = res.esbuild as Record<string, unknown>;
+						res.oxc = {
+							jsx: {
+								runtime: esbuild.jsx === "automatic" ? "automatic" : "classic",
+								importSource: esbuild.jsxImportSource || "react",
+								refresh: env.command === "serve",
+							},
+							jsxRefreshInclude: /\.([tj]sx?)$/,
+							jsxRefreshExclude: /\/node_modules\//,
+						};
+						delete res.esbuild;
+					}
+					if (res.optimizeDeps && typeof res.optimizeDeps === "object") {
+						const optimizeDeps = res.optimizeDeps as Record<string, unknown>;
+						if (optimizeDeps.esbuildOptions) {
+							optimizeDeps.rolldownOptions = {
+								transform: { jsx: { runtime: "automatic" } },
+							};
+							delete optimizeDeps.esbuildOptions;
+						}
+					}
+					return res;
+				};
+			}
+			return reactPlugins;
+		})(),
 		tailwindcss(),
 		devServer({
 			entry: "src/entry-server.tsx",

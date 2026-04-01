@@ -21,6 +21,7 @@ bash scripts/setup.sh
 ```
 
 The setup script will:
+
 - Update project name in package.json
 - Create .env file from .env.example
 - Install dependencies (optional)
@@ -100,8 +101,6 @@ vp check --fix  # Auto-fix lint and formatting issues
 npm start       # Start production server (after build)
 ```
 
-
-
 ## 🔄 SSR Flow
 
 1. **Request**: Browser requests a URL
@@ -132,7 +131,7 @@ function AboutPage() {
 ```tsx
 import { Link } from "@tanstack/react-router";
 
-<Link to="/about">About</Link>
+<Link to="/about">About</Link>;
 ```
 
 ### 📊 Data Loading
@@ -245,6 +244,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed deployment strategies.
 ## 🤖 AI-Friendly
 
 This template includes comprehensive documentation for AI coding assistants:
+
 - `.cursorrules` for Cursor IDE
 - `AGENTS.md` for general AI agent guidelines
 - `CLAUDE.md` for Claude-specific context
