@@ -131,7 +131,9 @@ function AboutPage() {
 ```tsx
 import { Link } from "@tanstack/react-router";
 
-<Link to="/about">About</Link>;
+function Navigation() {
+  return <Link to="/about">About</Link>;
+}
 ```
 
 ### 📊 Data Loading

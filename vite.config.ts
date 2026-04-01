@@ -24,7 +24,7 @@ const ssrBuild = {
 	ssrEmitAssets: false,
 	copyPublicDir: false,
 	emptyOutDir: false,
-	rollupOptions: {
+	rolldownOptions: {
 		input: resolve(__dirname, "src/entry-server.tsx"),
 		output: {
 			entryFileNames: "index.js",
@@ -39,7 +39,7 @@ const clientBuild = {
 	outDir: "dist/client",
 	copyPublicDir: true,
 	emptyOutDir: true,
-	rollupOptions: {
+	rolldownOptions: {
 		input: resolve(__dirname, "src/entry-client.tsx"),
 		output: {
 			entryFileNames: "static/[name].js",
@@ -227,7 +227,7 @@ export default defineConfig({
 		singleQuote: false,
 		trailingComma: "es5",
 		printWidth: 100,
-		sortPackageJson: false,
+		experimentalSortPackageJson: false,
 		ignorePatterns: ["dist/", "node_modules/", "src/routeTree.gen.ts", "package-lock.json", "*.md"],
 	},
 	plugins: [
