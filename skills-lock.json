@@ -1,0 +1,40 @@
+{
+	"version": 1,
+	"skills": {
+		"hono": {
+			"source": "yusukebe/hono-skill",
+			"sourceType": "github",
+			"computedHash": "24bad73932f309cec73a5a9171b838f59050990a634d8590c2d2c204507e64f9"
+		},
+		"react-expert": {
+			"source": "reactjs/react.dev",
+			"sourceType": "github",
+			"computedHash": "e4f38b4f38c6ff4124c0b776d3ff352097bd061ccef5e583bad44a543879c30b"
+		},
+		"tanstack-query": {
+			"source": "tanstack-skills/tanstack-skills",
+			"sourceType": "github",
+			"computedHash": "bfe2977e92667b84efeb4b12e5c3010807934aab2f7ac2b059241cd3da2a3e6e"
+		},
+		"tanstack-router": {
+			"source": "tanstack-skills/tanstack-skills",
+			"sourceType": "github",
+			"computedHash": "6aba9066ca12bf6bb6eebec9c58f5d4e33b6b06e2b11bf263f5b7a5c18edc389"
+		},
+		"vite": {
+			"source": "antfu/skills",
+			"sourceType": "github",
+			"computedHash": "1cdc4bbecaa89544e6ef92566b015db989994bf90c4472683ac64f7a114dc3af"
+		},
+		"vite-plus": {
+			"source": "absolutelyskilled/absolutelyskilled",
+			"sourceType": "github",
+			"computedHash": "0ca207da614ea478f21c056732bd2dab49697618cdb8a81022f34b5575e60bd4"
+		},
+		"vitest": {
+			"source": "supabase/supabase",
+			"sourceType": "github",
+			"computedHash": "0efd9cf8c56aada060d418d009cfe621a7915d0c73a958fe611985bc0c2fa4b8"
+		}
+	}
+}

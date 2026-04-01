@@ -1,15 +1,13 @@
 {
-	// Editor
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": "explicit"
+		"source.fixAll.eslint": "explicit",
+		"source.fixAll.oxc": "explicit"
 	},
 	"editor.tabSize": 2,
 	"editor.insertSpaces": false,
 	"editor.detectIndentation": false,
-
-	// Files
 	"files.eol": "\n",
 	"files.trimTrailingWhitespace": true,
 	"files.insertFinalNewline": true,
@@ -28,13 +26,9 @@
 	"files.readonlyInclude": {
 		"**/routeTree.gen.ts": true
 	},
-
-	// TypeScript
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.preferences.importModuleSpecifier": "relative",
-
-	// Biome (disable conflicting formatters)
 	"[javascript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -56,14 +50,10 @@
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-
-	// Tailwind CSS
 	"tailwindCSS.experimental.classRegex": [
 		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
 		["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
 	],
-
-	// Search
 	"search.exclude": {
 		"**/routeTree.gen.ts": true,
 		"**/node_modules": true,
@@ -72,10 +62,11 @@
 		"**/.tanstack": true,
 		"**/package-lock.json": true
 	},
-
-	// Git
 	"git.ignoreLimitWarning": true,
-
-	// NPM Scripts
-	"npm.enableScriptExplorer": true
+	"npm.enableScriptExplorer": true,
+	"chat.tools.terminal.autoApprove": {
+		"vp": true
+	},
+	"oxc.fmt.configPath": "./vite.config.ts",
+	"editor.formatOnSaveMode": "file"
 }
