@@ -3,17 +3,18 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vp dev",
 		"start": "cross-env NODE_ENV=production node dist/server/index.js",
-		"build:client": "cross-env NODE_ENV=production vite build --mode client",
-		"build:server": "cross-env NODE_ENV=production vite build",
-		"build:types": "tsc",
+		"build:client": "cross-env NODE_ENV=production CLIENT_BUILD=true vp build",
+		"build:server": "cross-env NODE_ENV=production vp build",
+		"build:types": "vp check",
 		"build": "npm run build:client && npm run build:server && npm run build:types",
 		"build:analyze": "npm run build:client -- --analyze",
-		"test": "vitest run",
-		"format": "prettier --write .",
-		"lint": "eslint .",
-		"check": "npm run lint && prettier --check ."
+		"test": "vp test run",
+		"format": "vp fmt",
+		"lint": "vp lint",
+		"check": "vp check",
+		"prepare": "vp config"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.19.9",
@@ -32,7 +33,6 @@
 		"zod": "^4.3.5"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.39.2",
 		"@hono/vite-dev-server": "^0.24.1",
 		"@testing-library/dom": "^10.4.1",
 		"@testing-library/react": "^16.3.2",
@@ -42,17 +42,17 @@
 		"@vitejs/plugin-react": "^5.1.2",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"cross-env": "^10.1.0",
-		"eslint": "^9.39.2",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^7.0.1",
-		"globals": "^17.0.0",
 		"jsdom": "^27.4.0",
-		"prettier": "^3.8.0",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.53.1",
-		"vite": "^7.3.1",
+		"vite": "npm:@voidzero-dev/vite-plus-core@latest",
 		"vite-bundle-analyzer": "^1.3.2",
-		"vitest": "^4.0.17",
+		"vite-plus": "latest",
+		"vitest": "npm:@voidzero-dev/vite-plus-test@latest",
 		"web-vitals": "^5.1.0"
+	},
+	"packageManager": "npm@11.12.1",
+	"overrides": {
+		"vite": "npm:@voidzero-dev/vite-plus-core@latest",
+		"vitest": "npm:@voidzero-dev/vite-plus-test@latest"
 	}
 }

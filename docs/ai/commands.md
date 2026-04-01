@@ -2,19 +2,22 @@
 
 ## Daily Workflow
 
-- `npm run dev`: start Vite dev server
-- `npm test`: run Vitest (CI-style)
-- `npm run check`: run lint + Prettier check
-- `npm run format`: format with Prettier
-- `npm run lint`: lint with ESLint
+- `vp dev`: start Vite dev server
+- `vp test`: run Vitest (single-run by default)
+- `vp test watch`: run Vitest in watch mode
+- `vp check`: run format (Oxfmt) + lint (Oxlint) + type-check (tsgo) in one pass
+- `vp check --fix`: auto-fix formatting and lint issues
+- `vp fmt`: format only
+- `vp lint`: lint only
 
 ## Build / Run (Production)
 
-- `npm run build`: runs `build:client`, `build:server`, then `build:types`
-- `npm run build:types`: TypeScript typecheck (`tsc`)
-- `npm run start`: run the built server (`dist/server/index.js`)
+- `vp run build`: runs `build:client` then `build:server`
+- `npm start`: run the built server (`dist/server/index.js`)
+
+> Use `vp run build` (not `vp build`) because the project has a custom `build` script in `package.json` that chains client + server builds.
 
 ## Build Outputs
 
-- Client output: `dist/client/` (static assets are under `dist/client/static/`)
+- Client output: `dist/client/` (static assets under `dist/client/static/`)
 - Server output: `dist/server/index.js`

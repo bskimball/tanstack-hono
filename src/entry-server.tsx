@@ -37,9 +37,7 @@ function getProdAppCssHrefs(): string[] {
 		const entry = manifest["src/entry-client.tsx"];
 
 		if (!entry) {
-			console.warn(
-				"Could not find src/entry-client.tsx in Vite manifest. CSS will not be linked."
-			);
+			console.warn("Could not find src/entry-client.tsx in Vite manifest. CSS will not be linked.");
 			cachedProdAppCssHrefs = [];
 			return cachedProdAppCssHrefs;
 		}

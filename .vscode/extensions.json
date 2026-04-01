@@ -1,15 +1,15 @@
 {
 	"recommendations": [
-		"esbenp.prettier-vscode",
-		"dbaeumer.vscode-eslint",
 		"ms-vscode.vscode-typescript-next",
-		"esbenp.prettier-vscode",
 		"formulahendry.auto-rename-tag",
 		"ms-vscode-remote.remote-containers",
 		"github.vscode-github-actions",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"VoidZero.vite-plus-extension-pack"
 	],
 	"unwantedRecommendations": [
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
 		"hookyqr.beautify",
 		"dbaeumer.jshint",
 		"ms-vscode.vscode-typescript-tslint-plugin"
