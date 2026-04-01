@@ -4,7 +4,7 @@ This repo is a full-stack React SSR app:
 
 - Router: TanStack Router (file-based routing)
 - Server + SSR: Hono
-- Build tooling: Vite
+- Build tooling: Vite+ (unified toolchain: Rolldown bundler, Oxlint, Oxfmt, Vitest, tsgo)
 
 ## Entry Points
 
@@ -19,3 +19,20 @@ This repo is a full-stack React SSR app:
 - Auto-generated route tree: `src/routeTree.gen.ts`
 
 Important: never edit `src/routeTree.gen.ts` directly; it will be overwritten.
+
+## Project Structure
+
+```
+src/
+├── components/       # Shared UI components
+├── hooks/            # Reusable React hooks
+├── lib/              # Shared utilities (API helpers, etc.)
+├── routes/           # File-based routes (TanStack Router)
+├── tests/            # Component and integration tests
+├── entry-client.tsx  # Client hydration entry
+├── entry-server.tsx  # Hono SSR server entry
+├── router.tsx        # Router factory
+├── routeTree.gen.ts  # Auto-generated (do not edit)
+├── reportWebVitals.ts
+└── styles.css
+```

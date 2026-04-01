@@ -53,10 +53,10 @@ Open [http://localhost:3000](http://localhost:3000) to see your app running!
 
 - **🗺 TanStack Router**: Type-safe, file-based routing with powerful data loading
 - **⚡ Hono SSR**: Ultra-fast server-side rendering with minimal overhead
-- **🔥 Vite**: Lightning-fast development with Hot Module Replacement
-- **📘 TypeScript**: Full type safety across client and server
+- **🔥 Vite+**: Lightning-fast development with Hot Module Replacement, powered by Rolldown
+- **📘 TypeScript**: Full type safety across client and server, checked by tsgo/tsgolint
 - **🎨 Tailwind CSS v4**: Modern utility-first CSS framework
-- **🧹 ESLint & Prettier**: Industry standard linting and formatting for code quality
+- **🧹 Oxlint & Oxfmt**: Fast linting and formatting via Vite+ (replaces ESLint & Prettier)
 - **🧪 Vitest**: Fast unit testing with great DX
 
 ## 📁 Architecture
@@ -64,26 +64,40 @@ Open [http://localhost:3000](http://localhost:3000) to see your app running!
 ```
 src/
 ├── components/
-│   └── Header.tsx            # Reusable UI components
-├── routes/                   # File-based routing (auto-generated)
+│   ├── Header.tsx            # Site header component
+│   └── HeroSection.tsx       # Landing page hero
+├── hooks/
+│   └── useDebounce.ts        # Reusable debounce hook
+├── lib/
+│   └── api.ts                # Shared API/fetch utilities
+├── routes/                   # File-based routing (TanStack Router)
 │   ├── __root.tsx            # Root layout component
 │   ├── index.tsx             # Home page route
 │   ├── about.tsx             # About page route
-│   └── -test.ts              # Test route utilities
+│   ├── error.tsx             # Error boundary route
+│   ├── -api.ts               # Server-only API route helpers
+│   └── -test.ts              # Test route utilities (ignored by router)
+├── tests/
+│   ├── Header.test.tsx
+│   ├── HeroSection.test.tsx
+│   └── root-route.test.tsx
 ├── entry-client.tsx          # Client-side hydration entry
 ├── entry-server.tsx          # Hono server with SSR setup
 ├── router.tsx                # Router configuration
+├── routeTree.gen.ts          # Auto-generated route tree (do not edit)
+├── reportWebVitals.ts        # Web Vitals reporting
 └── styles.css                # Global styles
 ```
 
 ## 🛠 Development
 
 ```bash
-npm run dev    # Start development server
-npm run build  # Build for production
-npm start      # Start production server
-npm run test   # Run tests
-npm run check  # Lint and format code
+vp dev          # Start development server
+vp run build    # Build for production (client + server)
+vp test         # Run tests
+vp check        # Lint, format, and type-check
+vp check --fix  # Auto-fix lint and formatting issues
+npm start       # Start production server (after build)
 ```
 
 
@@ -227,7 +241,6 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed deployment strategies.
 - **[CLAUDE.md](CLAUDE.md)** - Claude-specific context and patterns
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Deep dive into system design
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
-- **[SECURITY.md](SECURITY.md)** - Security policy and best practices
 
 ## 🤖 AI-Friendly
 

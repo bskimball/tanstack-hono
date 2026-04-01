@@ -4,8 +4,9 @@ Prefer `AGENTS.md` as the source of truth for repo-wide rules; this file is a qu
 
 ## Essentials
 
-- Key commands: `npm run dev`, `npm run build`, `npm run start`, `npm run check`, `npm test`
+- Key commands: `vp dev`, `vp run build`, `vp test`, `vp check`, `vp check --fix`
 - Never edit `src/routeTree.gen.ts` directly (auto-generated)
+- Linting/formatting: Oxlint + Oxfmt via `vp` — no separate eslint/prettier config files
 
 ## References
 

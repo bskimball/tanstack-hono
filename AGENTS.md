@@ -1,16 +1,18 @@
 # AI Agent Guidelines
 
-Full-stack React SSR app built with TanStack Router (file-based routing) and Hono (server + SSR), using Vite + TypeScript.
+Full-stack React SSR app built with TanStack Router (file-based routing) and Hono (server + SSR), using Vite+ and TypeScript.
 
 ## Essentials
 
-- Package manager: `npm`
+- Package manager: use `vp` (Vite+ CLI) — do not call `npm`/`npx` directly
 - Do not edit `src/routeTree.gen.ts` (auto-generated)
 - Routes live in `src/routes/` (file-based)
 - SSR server entry: `src/entry-server.tsx`; client entry: `src/entry-client.tsx`
-- Non-standard build/typecheck:
-  - `npm run build` runs `build:client`, `build:server`, and `build:types`
-  - `npm run build:types` runs `tsc`
+- Build commands:
+  - `vp run build` — runs `build:client` then `build:server` (both use `vp build` internally)
+  - `vp check` — format (Oxfmt) + lint (Oxlint) + type-check (tsgo) in one pass
+  - `vp test` — run all tests (single-run mode)
+- Linting/formatting: Oxlint + Oxfmt (configured in `vite.config.ts`, **no** separate eslint/prettier files)
 
 ## More Detailed Guides
 
