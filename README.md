@@ -4,6 +4,11 @@ A modern, production-ready full-stack React application template combining **Tan
 
 [![CI](https://github.com/bskimball/tanstack-hono/actions/workflows/ci.yml/badge.svg)](https://github.com/bskimball/tanstack-hono/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![AI Ready](https://img.shields.io/badge/AI-Ready-8b5cf6)](#-ai-friendly)
+
+> AI Ready: this repo includes checked-in framework-specific docs in `docs/ai/`
+> and repo-local skills in `.agents/skills/` so an LLM can follow the project's
+> actual patterns when helping build the app.
 
 ## 🏃‍♂️ Quick Start
 
