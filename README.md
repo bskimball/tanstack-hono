@@ -295,17 +295,25 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed deployment strategies.
 
 - **[AGENTS.md](AGENTS.md)** - Guide for AI agents working with this codebase
 - **[CLAUDE.md](CLAUDE.md)** - Claude-specific context and patterns
+- **[docs/ai/README.md](docs/ai/README.md)** - Index of framework-specific working docs for this repo
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Deep dive into system design
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
 - **[docs/ai/streaming.md](docs/ai/streaming.md)** - How to enable TanStack Router streaming SSR
 
 ## 🤖 AI-Friendly
 
-This template includes comprehensive documentation for AI coding assistants:
+This template includes checked-in guidance for LLMs and coding agents, so they
+have repo-specific context for building features instead of relying only on
+generic framework knowledge.
 
 - `.cursorrules` for Cursor IDE
 - `AGENTS.md` for general AI agent guidelines
 - `CLAUDE.md` for Claude-specific context
+- `docs/ai/` for task-focused docs covering commands, architecture, routing, Hono APIs, styling, testing, deployment, and streaming SSR
+- `.agents/skills/` for repo-local skills covering Hono, TanStack Router, TanStack Query, Vite, Vite+, Vitest, and React research
+
+An LLM that reads those files should have the project-specific instructions it
+needs to help implement and maintain the app effectively.
 
 ## 📖 Learn More
 
