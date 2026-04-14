@@ -11,6 +11,7 @@ This folder contains task-focused docs for AI agents (and humans) working in thi
 ## Task Guides
 
 - Routing + data loading: `docs/ai/routing-and-data.md`
+- Streaming SSR: `docs/ai/streaming.md`
 - Server/API patterns: `docs/ai/server-api.md`
 - Environment variables: `docs/ai/environment.md`
 - Styling: `docs/ai/styling.md`
