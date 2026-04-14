@@ -39,3 +39,15 @@ export const Route = createFileRoute('/users')({
 ```
 
 If loader failures should be user-visible, prefer route-level error boundaries.
+
+## Deferred Data And Streaming
+
+If a route has fast data and slow non-critical data, prefer deferring the slow work
+and resolving it with `Await` instead of blocking the full response.
+
+Use `docs/ai/streaming.md` for:
+
+- Switching the server entry to streaming SSR
+- Using `defer(...)` with `Await`
+- Adding route-level `pendingComponent` and `wrapInSuspense`
+- Wiring TanStack Query SSR streaming with `@tanstack/react-router-ssr-query`
