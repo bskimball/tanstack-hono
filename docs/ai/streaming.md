@@ -18,6 +18,10 @@ Use streaming SSR when you want to:
 TanStack Router supports both modes. The docs examples below are based on the
 TanStack Router SSR and query integration guides pulled via Context7.
 
+The data examples below assume the matching Hono API routes live in
+`src/routes/-api.ts` and are consumed through the existing RPC client in
+`src/lib/api.ts`.
+
 ## 1. Switch The Server Entry To Streaming
 
 The current server entry uses `renderRouterToString`:
@@ -83,20 +87,44 @@ Streaming becomes most useful when a route has some critical data that should bl
 the initial shell and some slower data that should not.
 
 ```tsx
+import type { InferResponseType } from 'hono/client'
 import { Await, createFileRoute, defer } from '@tanstack/react-router'
+import { api } from '../lib/api'
 
-async function fetchPost(postId: string) {
-  return fetch(`/api/posts/${postId}`).then((r) => r.json())
+const getPostRoute = api.posts[':postId'].$get
+const getCommentsRoute = api.posts[':postId'].comments.$get
+
+type Post = InferResponseType<typeof getPostRoute>
+type Comments = InferResponseType<typeof getCommentsRoute>
+
+async function getPost(postId: string): Promise<Post> {
+  const response = await api.posts[':postId'].$get({
+    param: { postId },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to load post')
+  }
+
+  return response.json()
 }
 
-async function fetchComments(postId: string) {
-  return fetch(`/api/posts/${postId}/comments`).then((r) => r.json())
+async function getComments(postId: string): Promise<Comments> {
+  const response = await api.posts[':postId'].comments.$get({
+    param: { postId },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to load comments')
+  }
+
+  return response.json()
 }
 
 export const Route = createFileRoute('/posts/$postId')({
   loader: async ({ params }) => {
-    const post = await fetchPost(params.postId)
-    const commentsPromise = fetchComments(params.postId)
+    const post = await getPost(params.postId)
+    const commentsPromise = getComments(params.postId)
 
     return {
       post,
@@ -187,6 +215,9 @@ function SidebarSkeleton() {
 If the app uses TanStack Query, TanStack Router's recommended SSR integration is
 `@tanstack/react-router-ssr-query`.
 
+Once this is enabled, `setupRouterSsrQueryIntegration(...)` wraps the app with a
+`QueryClientProvider` by default and streams queries that resolve during SSR.
+
 Install it with Vite+:
 
 ```bash
@@ -242,15 +273,31 @@ export function createRouter(options: {
 Create the `QueryClient` inside `createRouter()` so SSR gets a fresh client per
 request instead of sharing cache state across users.
 
-Then preload critical data in the route loader and read it with `useSuspenseQuery`:
+Then preload critical data in the route loader and read it with
+`useSuspenseQuery`. Reuse the same Hono-backed query options in both places:
 
 ```tsx
+import type { InferResponseType } from 'hono/client'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import { api } from '../lib/api'
+
+const getPostsRoute = api.posts.$get
+type Posts = InferResponseType<typeof getPostsRoute>
+
+async function getPosts(): Promise<Posts> {
+  const response = await api.posts.$get()
+
+  if (!response.ok) {
+    throw new Error('Failed to load posts')
+  }
+
+  return response.json()
+}
 
 const postsQuery = queryOptions({
   queryKey: ['posts'],
-  queryFn: () => fetch('/api/posts').then((r) => r.json()),
+  queryFn: getPosts,
 })
 
 export const Route = createFileRoute('/posts')({
@@ -277,11 +324,28 @@ function PostsPage() {
 }
 ```
 
+The same query options also work in smaller components that render after
+hydration, so you do not need a separate fetch path for client-side updates:
+
+```tsx
+import { useQuery } from '@tanstack/react-query'
+import { postsQuery } from '../lib/queries/posts'
+
+function PostsSidebar() {
+  const { data: posts, isPending } = useQuery(postsQuery)
+
+  if (isPending) return <p>Loading posts...</p>
+
+  return <p>{posts.length} posts cached</p>
+}
+```
+
 What this integration gives you:
 
 - Automatic server dehydration and client hydration
 - Query results streamed when they resolve during SSR
 - Redirect handling for query-driven route loaders
+- One shared Hono RPC query definition for loaders and components
 
 ## 5. Practical Guidance For This Repo
 
@@ -304,4 +368,6 @@ For this repo, the main files involved are:
 - `src/entry-server.tsx`: switch from `renderRouterToString` to streaming
 - `src/router.tsx`: add `setupRouterSsrQueryIntegration` if using TanStack Query
 - `src/types/router.ts`: add `queryClient` to the router context
+- `src/lib/api.ts`: shared Hono RPC client used by loaders and queries
+- `src/lib/queries/*`: optional home for shared TanStack Query option builders
 - `src/routes/*`: add `defer(...)`, `Await`, `Suspense`, and `pendingComponent` where needed
