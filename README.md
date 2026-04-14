@@ -70,7 +70,7 @@ src/
 ├── hooks/
 │   └── useDebounce.ts        # Reusable debounce hook
 ├── lib/
-│   └── api.ts                # Shared API/fetch utilities
+│   └── api.ts                # Shared Hono RPC client
 ├── routes/                   # File-based routing (TanStack Router)
 │   ├── __root.tsx            # Root layout component
 │   ├── index.tsx             # Home page route
@@ -122,6 +122,7 @@ See `docs/ai/streaming.md` for:
 
 - When to keep non-streaming SSR
 - How to switch `src/entry-server.tsx` to streaming
+- How to use the existing Hono RPC client in deferred loaders and queries
 - A `defer(...)` + `Await` example
 - A `Suspense` example
 - An SSR query streaming example using `@tanstack/react-router-ssr-query`
@@ -156,25 +157,62 @@ function Navigation() {
 ### 📊 Data Loading
 
 ```tsx
-export const Route = createFileRoute("/users")({
+import type { InferResponseType } from "hono/client";
+import { createFileRoute } from "@tanstack/react-router";
+import { api } from "../lib/api";
+
+const getHealthRoute = api.health.$get;
+type Health = InferResponseType<typeof getHealthRoute>;
+
+async function getHealth(): Promise<Health> {
+  const response = await api.health.$get();
+
+  if (!response.ok) {
+    throw new Error("Failed to load health check");
+  }
+
+  return response.json();
+}
+
+export const Route = createFileRoute("/status")({
   loader: async () => {
-    const users = await fetch("/api/users").then((r) => r.json());
-    return { users };
+    return {
+      health: await getHealth(),
+    };
   },
-  component: UsersPage,
+  component: StatusPage,
 });
 
-function UsersPage() {
-  const { users } = Route.useLoaderData();
-  return (
-    <ul>
-      {users.map((user) => (
-        <li key={user.id}>{user.name}</li>
-      ))}
-    </ul>
-  );
+function StatusPage() {
+  const { health } = Route.useLoaderData();
+
+  return <pre>{JSON.stringify(health, null, 2)}</pre>;
 }
 ```
+
+For client-side data, you can reuse the same Hono-backed helpers with TanStack
+Query instead of maintaining a separate fetch path:
+
+```tsx
+import { queryOptions, useQuery } from "@tanstack/react-query";
+
+export const healthQuery = queryOptions({
+  queryKey: ["health"],
+  queryFn: getHealth,
+  staleTime: 30_000,
+});
+
+function HealthBadge() {
+  const { data, isPending } = useQuery(healthQuery);
+
+  if (isPending) return <p>Checking API...</p>;
+
+  return <p>API status: {data.status}</p>;
+}
+```
+
+See `docs/ai/routing-and-data.md` and `docs/ai/server-api.md` for the full Hono
+RPC patterns used in this template.
 
 ## 🏠 Layouts with SSR
 
