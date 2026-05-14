@@ -18,6 +18,8 @@ const port = process.env.NODE_SERVER_PORT
 const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const isClientBuild = process.env.CLIENT_BUILD === "true";
+const isTest =
+	process.env.NODE_ENV === "test" || process.env.VITEST === "true" || process.argv.includes("test");
 
 const ssrBuild = {
 	outDir: "dist/server",
@@ -252,7 +254,7 @@ export default defineConfig({
 							jsx: {
 								runtime: esbuild.jsx === "automatic" ? "automatic" : "classic",
 								importSource: esbuild.jsxImportSource || "react",
-								refresh: env.command === "serve",
+								refresh: env.command === "serve" && !isTest,
 							},
 							jsxRefreshInclude: /\.([tj]sx?)$/,
 							jsxRefreshExclude: /\/node_modules\//,
