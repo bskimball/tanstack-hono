@@ -12,50 +12,56 @@ const TanStackRouterDevtools = import.meta.env.PROD
 		);
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-	head: ({ match }) => ({
-		links: [
-			{ rel: "icon", href: "/favicon.ico" },
-			...match.context.appCssHrefs.map((href) => ({
-				rel: "stylesheet",
-				href,
-				"data-app-css": "1",
-			})),
-		],
-		meta: [
-			{
-				title: "TanStack Router SSR Basic File Based Streaming",
-			},
-			{
-				charSet: "UTF-8",
-			},
-			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1.0",
-			},
-		],
-		scripts: [
-			...(!import.meta.env.PROD
-				? [
-						{
-							type: "module",
-							children: `import RefreshRuntime from "/@react-refresh"
+	head: ({ match }) => {
+		const clientEntrySrc = import.meta.env.PROD
+			? match.context.clientEntrySrc || "/static/entry-client.js"
+			: "/src/entry-client.tsx";
+		return {
+			links: [
+				{ rel: "icon", href: "/favicon.ico" },
+				...match.context.appCssHrefs.map((href) => ({
+					rel: "stylesheet",
+					href,
+					"data-app-css": "1",
+				})),
+			],
+			meta: [
+				{
+					title: "TanStack Router SSR Basic File Based Streaming",
+				},
+				{
+					charSet: "UTF-8",
+				},
+				{
+					name: "viewport",
+					content: "width=device-width, initial-scale=1.0",
+				},
+			],
+			scripts: [
+				...(!import.meta.env.PROD
+					? [
+							{
+								type: "module",
+								children: `import RefreshRuntime from "/@react-refresh"
   								RefreshRuntime.injectIntoGlobalHook(window)
   								window.$RefreshReg$ = () => {}
   								window.$RefreshSig$ = () => (type) => type
   								window.__vite_plugin_react_preamble_installed__ = true`,
-						},
-						{
-							type: "module",
-							src: "/@vite/client",
-						},
-					]
-				: []),
-			{
-				type: "module",
-				src: import.meta.env.PROD ? "/static/entry-client.js" : "/src/entry-client.tsx",
-			},
-		],
-	}),
+							},
+							{
+								type: "module",
+								src: "/@vite/client",
+							},
+						]
+					: []),
+				{
+					type: "module",
+					src: clientEntrySrc,
+					"data-app-entry": "1",
+				},
+			],
+		};
+	},
 	errorComponent: RootErrorComponent,
 	notFoundComponent: () => (
 		<main className="min-h-screen bg-[var(--color-void)] relative overflow-hidden flex items-center justify-center">

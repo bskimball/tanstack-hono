@@ -44,7 +44,7 @@ const clientBuild = {
 	rolldownOptions: {
 		input: resolve(__dirname, "src/entry-client.tsx"),
 		output: {
-			entryFileNames: "static/[name].js",
+			entryFileNames: "static/[name]-[hash].js",
 			chunkFileNames: "static/[name]-[hash].js",
 			assetFileNames: "static/[name]-[hash][extname]",
 		},

@@ -5,12 +5,14 @@ import type { RouterContext } from "./types/router";
 export interface CreateRouterOptions {
 	head?: string;
 	appCssHrefs?: string[];
+	clientEntrySrc?: string;
 }
 
 export function createRouter(options: CreateRouterOptions = {}) {
 	const context: RouterContext = {
 		head: options.head ?? "",
 		appCssHrefs: options.appCssHrefs ?? [],
+		clientEntrySrc: options.clientEntrySrc ?? "",
 	};
 
 	return createTanstackRouter({

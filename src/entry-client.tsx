@@ -18,8 +18,19 @@ function getInitialAppCssHrefs() {
 		.filter((href): href is string => Boolean(href));
 }
 
+function getInitialClientEntrySrc() {
+	const script = document.querySelector<HTMLScriptElement>("script[data-app-entry]");
+	if (!script) return "";
+	try {
+		return new URL(script.src).pathname;
+	} catch {
+		return "";
+	}
+}
+
 const router = createRouter({
 	appCssHrefs: getInitialAppCssHrefs(),
+	clientEntrySrc: getInitialClientEntrySrc(),
 });
 
 hydrateRoot(document, <RouterClient router={router} />);

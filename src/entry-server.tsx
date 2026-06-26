@@ -70,6 +70,45 @@ function getAppCssHrefs(): string[] {
 	return ["/src/styles.css"];
 }
 
+let cachedProdClientEntrySrc: string | null = null;
+
+function getProdClientEntrySrc(): string {
+	if (cachedProdClientEntrySrc) return cachedProdClientEntrySrc;
+
+	const fallback = "/static/entry-client.js";
+
+	try {
+		const manifestPath = resolve(process.cwd(), "dist/client/.vite/manifest.json");
+		const raw = readFileSync(manifestPath, "utf8");
+		const manifest = JSON.parse(raw) as ViteManifest;
+		const entry = manifest["src/entry-client.tsx"];
+
+		if (!entry?.file) {
+			console.warn(
+				`Could not find src/entry-client.tsx in Vite manifest. Falling back to ${fallback}.`
+			);
+			cachedProdClientEntrySrc = fallback;
+			return cachedProdClientEntrySrc;
+		}
+
+		cachedProdClientEntrySrc = entry.file.startsWith("/") ? entry.file : `/${entry.file}`;
+		return cachedProdClientEntrySrc;
+	} catch (error) {
+		console.warn("Failed to read Vite manifest for client entry:", error);
+		cachedProdClientEntrySrc = fallback;
+		return cachedProdClientEntrySrc;
+	}
+}
+
+function getClientEntrySrc(): string {
+	if (process.env.NODE_ENV === "production") {
+		return getProdClientEntrySrc();
+	}
+
+	// In dev, Vite serves the unbundled entry directly.
+	return "/src/entry-client.tsx";
+}
+
 const port = process.env.NODE_SERVER_PORT
 	? Number.parseInt(process.env.NODE_SERVER_PORT, 10)
 	: 3000;
@@ -113,6 +152,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("*", async (c) => {
 	const appCssHrefs = getAppCssHrefs();
+	const clientEntrySrc = getClientEntrySrc();
 
 	const handler = createRequestHandler({
 		request: c.req.raw,
@@ -120,6 +160,7 @@ app.use("*", async (c) => {
 			return createRouter({
 				head: "",
 				appCssHrefs,
+				clientEntrySrc,
 			});
 		},
 	});
