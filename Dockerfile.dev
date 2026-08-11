@@ -1,13 +1,16 @@
 # Development Dockerfile with hot reload
-FROM node:22-alpine AS dev
+FROM node:22.22-alpine AS dev
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including dev dependencies)
-RUN npm install
+# Enforce packageManager and install all dependencies (including dev dependencies)
+# Skip repo-only prepare (vp config); keep package lifecycle scripts
+RUN npm install -g npm@12.0.2 && \
+    npm pkg delete scripts.prepare && \
+    npm install
 
 # Copy source code
 COPY . .

@@ -51,3 +51,4 @@ docker-compose*.yml
 count.txt
 *.log
 .cache
+NUL

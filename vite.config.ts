@@ -2,13 +2,14 @@
 
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import devServer, { defaultOptions } from "@hono/vite-dev-server";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import viteReact from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vite-plus";
 import { analyzer } from "vite-bundle-analyzer";
 import "dotenv/config";
+import { defaultOptions, honoDevServer } from "./plugins/hono-dev-server";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -18,8 +19,6 @@ const port = process.env.NODE_SERVER_PORT
 const host = process.env.NODE_SERVER_HOST || "localhost";
 
 const isClientBuild = process.env.CLIENT_BUILD === "true";
-const isTest =
-	process.env.NODE_ENV === "test" || process.env.VITEST === "true" || process.argv.includes("test");
 
 const ssrBuild = {
 	outDir: "dist/server",
@@ -234,49 +233,10 @@ export default defineConfig({
 	},
 	plugins: [
 		tanstackRouter({ autoCodeSplitting: true }),
-		...(() => {
-			const reactPlugins = viteReact({
-				babel: {
-					plugins: ["babel-plugin-react-compiler"],
-				},
-			});
-			const babelPlugin = reactPlugins.find((p) => p && p.name === "vite:react-babel");
-			if (babelPlugin && typeof babelPlugin.config === "function") {
-				const origConfig = babelPlugin.config;
-				babelPlugin.config = function (config, env) {
-					const res = (origConfig.call(this as never, config, env) || {}) as Record<
-						string,
-						unknown
-					>;
-					if (res.esbuild && typeof res.esbuild === "object") {
-						const esbuild = res.esbuild as Record<string, unknown>;
-						res.oxc = {
-							jsx: {
-								runtime: esbuild.jsx === "automatic" ? "automatic" : "classic",
-								importSource: esbuild.jsxImportSource || "react",
-								refresh: env.command === "serve" && !isTest,
-							},
-							jsxRefreshInclude: /\.([tj]sx?)$/,
-							jsxRefreshExclude: /\/node_modules\//,
-						};
-						delete res.esbuild;
-					}
-					if (res.optimizeDeps && typeof res.optimizeDeps === "object") {
-						const optimizeDeps = res.optimizeDeps as Record<string, unknown>;
-						if (optimizeDeps.esbuildOptions) {
-							optimizeDeps.rolldownOptions = {
-								transform: { jsx: { runtime: "automatic" } },
-							};
-							delete optimizeDeps.esbuildOptions;
-						}
-					}
-					return res;
-				};
-			}
-			return reactPlugins;
-		})(),
+		viteReact(),
+		babel({ presets: [reactCompilerPreset()] }),
 		tailwindcss(),
-		devServer({
+		honoDevServer({
 			entry: "src/entry-server.tsx",
 			injectClientScript: false,
 			exclude: [

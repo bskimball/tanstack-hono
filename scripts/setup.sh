@@ -48,12 +48,13 @@ else
   echo -e "${YELLOW}⚠ .env file already exists, skipping${NC}"
 fi
 
-# Check Node.js version
+# Check Node.js version (exact pin from .node-version)
 echo ""
 echo "Checking Node.js version..."
-NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
-if [ "$NODE_VERSION" -lt 18 ]; then
-  echo -e "${YELLOW}⚠ Warning: Node.js 18+ is recommended. You have $(node -v)${NC}"
+REQUIRED_NODE_VERSION="22.22.2"
+CURRENT_NODE_VERSION=$(node -v | cut -d'v' -f2)
+if [ "$CURRENT_NODE_VERSION" != "$REQUIRED_NODE_VERSION" ]; then
+  echo -e "${YELLOW}⚠ Warning: Node.js $REQUIRED_NODE_VERSION is required (exact). You have $(node -v)${NC}"
 else
   echo -e "${GREEN}✓ Node.js version: $(node -v)${NC}"
 fi
@@ -64,7 +65,12 @@ echo -e "${BLUE}Would you like to install dependencies now?${NC} (y/n)"
 read -r INSTALL_DEPS
 if [ "$INSTALL_DEPS" = "y" ] || [ "$INSTALL_DEPS" = "Y" ]; then
   echo "Installing dependencies..."
-  npm install
+  if ! command -v vp &> /dev/null; then
+    echo -e "${YELLOW}❌ Error: vp (Vite+) is required for dependency installation.${NC}"
+    echo "Install Vite+ from https://viteplus.dev (or follow project docs), then re-run this script."
+    exit 1
+  fi
+  vp install
   echo -e "${GREEN}✓ Dependencies installed${NC}"
 else
   echo -e "${YELLOW}⚠ Skipping dependency installation${NC}"
