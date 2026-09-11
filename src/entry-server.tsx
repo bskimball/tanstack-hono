@@ -3,7 +3,7 @@ import { serveStatic } from "@hono/node-server/serve-static";
 import {
 	createRequestHandler,
 	RouterServer,
-	renderRouterToString,
+	renderRouterToStream,
 } from "@tanstack/react-router/ssr/server";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -165,8 +165,9 @@ app.use("*", async (c) => {
 		},
 	});
 
-	return await handler(({ responseHeaders, router }) => {
-		return renderRouterToString({
+	return await handler(({ request, responseHeaders, router }) => {
+		return renderRouterToStream({
+			request,
 			responseHeaders,
 			router,
 			children: <RouterServer router={router} />,

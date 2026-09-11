@@ -9,15 +9,14 @@ This repo is a full-stack React SSR app:
 ## Entry Points
 
 - Client hydration: `src/entry-client.tsx`
-- SSR server setup: `src/entry-server.tsx` (non-streaming by default)
+- SSR server setup: `src/entry-server.tsx` (streaming)
 - Router configuration: `src/router.tsx`
 
 ## SSR Mode
 
-- Default SSR mode is non-streaming via `renderRouterToString`
-- Streaming SSR is optional and should be enabled when routes use deferred data,
-  `Suspense`, or SSR query streaming
-- Streaming setup notes live in `docs/ai/streaming.md`
+- Default SSR mode is streaming via `renderRouterToStream`
+- Streaming supports the root layout's lazy devtools and route-level `Suspense`
+- Streaming and deferred-data setup notes live in `docs/ai/streaming.md`
 
 ## Routing Files
 

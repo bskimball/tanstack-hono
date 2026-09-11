@@ -3,11 +3,10 @@
 ## Performance
 
 - SSR is enabled by default (SEO + faster first paint)
-- Default SSR mode is non-streaming; streaming is optional
+- Default SSR mode is streaming to support Suspense during server rendering
 - Consider code splitting with `React.lazy()` if bundles grow
 
-If you enable streaming SSR, make sure the deployment target and response pipeline
-support streaming responses correctly.
+The deployment target and response pipeline must support streaming responses.
 
 ## Runtime / Assets
 

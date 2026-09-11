@@ -1,48 +1,32 @@
 # Streaming SSR
 
-This repo uses non-streaming SSR by default.
+This repo uses streaming SSR by default.
 
 - Current server entry: `src/entry-server.tsx`
-- Current renderer: `renderRouterToString`
-- Default behavior: the full HTML response is rendered before it is sent
+- Current renderer: `renderRouterToStream`
+- Default behavior: the shell can stream while Suspense boundaries resolve
 
-That is a good default for this template because it keeps SSR setup simple and does
-not require route-level deferred data or suspenseful query flows.
+Streaming is required by the starter's root layout because its development-only
+TanStack Router devtools are loaded with `React.lazy` inside `Suspense`. React's
+`renderToString` cannot resolve that boundary on the server and would embed a
+client-render fallback in the HTML.
 
-Use streaming SSR when you want to:
+Streaming also lets the app:
 
 - Flush the shell early
 - Stream deferred loader data as it resolves
 - Let suspenseful query work continue rendering during SSR
 
-TanStack Router supports both modes. The docs examples below are based on the
-TanStack Router SSR and query integration guides pulled via Context7.
+The docs examples below are based on the TanStack Router SSR and query integration
+guides pulled via Context7.
 
 The data examples below assume the matching Hono API routes live in
 `src/routes/-api.ts` and are consumed through the existing RPC client in
 `src/lib/api.ts`.
 
-## 1. Switch The Server Entry To Streaming
+## 1. Server Entry
 
-The current server entry uses `renderRouterToString`:
-
-```tsx
-import {
-  createRequestHandler,
-  RouterServer,
-  renderRouterToString,
-} from '@tanstack/react-router/ssr/server'
-
-return handler(({ responseHeaders, router }) => {
-  return renderRouterToString({
-    responseHeaders,
-    router,
-    children: <RouterServer router={router} />,
-  })
-})
-```
-
-To enable streaming, switch to `renderRouterToStream`:
+The server entry uses TanStack Router's streaming renderer:
 
 ```tsx
 import {
@@ -349,23 +333,18 @@ What this integration gives you:
 
 ## 5. Practical Guidance For This Repo
 
-Keep non-streaming SSR if:
+Keep streaming enabled because the starter root layout includes a lazy component in
+`Suspense`. It also supports:
 
-- Routes mostly render static content
-- Loaders are fast and fully awaited
-- You want the simplest SSR behavior in the template
-
-Enable streaming if:
-
-- Routes use `defer(...)` for non-critical data
-- Pages have meaningful `Suspense` boundaries
-- You add TanStack Query and want SSR query streaming
+- Routes using `defer(...)` for non-critical data
+- Pages with meaningful `Suspense` boundaries
+- TanStack Query SSR streaming
 
 ## 6. Files You Would Change Here
 
 For this repo, the main files involved are:
 
-- `src/entry-server.tsx`: switch from `renderRouterToString` to streaming
+- `src/entry-server.tsx`: streaming SSR request handler
 - `src/router.tsx`: add `setupRouterSsrQueryIntegration` if using TanStack Query
 - `src/types/router.ts`: add `queryClient` to the router context
 - `src/lib/api.ts`: shared Hono RPC client used by loaders and queries

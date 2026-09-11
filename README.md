@@ -110,23 +110,19 @@ npm start       # Start production server (after build)
 
 1. **Request**: Browser requests a URL
 2. **Server**: Hono matches route and runs TanStack Router SSR
-3. **Render**: React components render to an HTML string by default
-4. **Response**: Full HTML sent to browser with embedded data
+3. **Render**: React components render through TanStack Router's streaming SSR handler
+4. **Response**: The HTML stream is sent with embedded router data
 5. **Hydration**: Client-side React takes over for SPA navigation
 
-## 🌊 Optional Streaming SSR
+## 🌊 Streaming SSR
 
-This template ships with non-streaming SSR by default via `renderRouterToString` in
-`src/entry-server.tsx`.
-
-That keeps the default setup simple, but TanStack Router also supports streaming SSR
-when you want to flush the initial shell early and stream deferred data or suspenseful
-query work as it resolves.
+This template uses `renderRouterToStream` in `src/entry-server.tsx`. Streaming is
+compatible with the root route's lazy development tools and supports Suspense without
+forcing affected boundaries to client rendering.
 
 See `docs/ai/streaming.md` for:
 
-- When to keep non-streaming SSR
-- How to switch `src/entry-server.tsx` to streaming
+- How the server entry is wired for streaming
 - How to use the existing Hono RPC client in deferred loaders and queries
 - A `defer(...)` + `Await` example
 - A `Suspense` example
